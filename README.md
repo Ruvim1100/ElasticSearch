@@ -1,77 +1,84 @@
-# Elasticsearch Engineering Academy · Interactive Portal
+# Elasticsearch Engineering Academy
 
-A beautiful, dependency-light static dashboard that automatically discovers new lessons.
+A GitHub-backed learning platform for Elasticsearch, .NET, TypeScript, distributed search, security, and production operations.
 
-## Quick start
+## Current state
 
-Requirements: Node.js >= 20 and optionally Python 3.
+- 19 planned modules and 137 lesson slots in `site/data/roadmap.json`.
+- 3 published interactive HTML lessons.
+- Responsive, searchable learning dashboard: `site/index.html`.
+- Automated lesson discovery: `scripts/build-catalog.mjs`.
+- Catalogue published as `site/data/catalog.json` and `site/data/catalog.js` (offline mode).
+- Verified learner progress is held **separately** in Google Sheets, not in this repo.
+- The repository is private and there is **no public site deployment** by default.
+
+## Start locally
+
+Requires Node.js 20+ and optionally Python 3.
 
 ```bash
 npm run check
 python -m http.server 8000 -d site
 ```
 
-Open <http://localhost:8000/>. `npm run build` rebuilds `site/data/catalog.json`; `npm test` validates lesson IDs, HTML existence, roadmap counts and URL paths. You can also open `site/index.html` directly from disk: the generator embeds an offline catalog in `site/data/catalog.js` as well as writing `site/data/catalog.json`. For testing actual hosting paths use the local HTTP server.
+Open http://localhost:8000 in your browser. Alternatively, you can open `site/index.html` without a server after running the build.
 
-## Publish a lesson (the only supported workflow)
+## Publish a new module lesson
 
-1. Choose its reserved ID (e.g. `M02-L01`) and verify the module exists in `site/data/roadmap.json`.
-2. Create `site/lessons/M02-L01/index.html` (HTML, visual diagram, hands-on tasks, sources and self-check).
-3. Create `site/lessons/M02-L01/lesson.json` with this metadata:
+1. Read `MODULE_CHAT_CONTRACT.md`, `PROJECT_INSTRUCTIONS.md` and `site/data/roadmap.json`.
+2. Reserve the correct lesson ID (e.g. `M04-L03`) from the roadmap and Google Sheets tracker.
+3. Create `site/lessons/M04-L03/index.html` (meaningful theory, graphics, interactive demos, practical tasks, self-check, source links).
+4. Create `site/lessons/M04-L03/lesson.json`:
 
 ```json
 {
-  "id": "M02-L01",
-  "moduleId": "M02",
-  "title": "Docker & Elasticsearch — первая лаборатория",
-  "summary": "Локальная среда, healthcheck и первые REST-запросы",
+  "id": "M04-L03",
+  "moduleId": "M04",
+  "title": "Название урока",
+  "summary": "В чём смысл урока и что сможем сделать",
   "durationMinutes": 90,
   "kind": "Interactive lesson",
-  "tags": ["Docker", "Kibana", "REST"],
+  "tags": ["Analyze API", "Tokenizers"],
   "publishedAt": "2026-11-18"
 }
 ```
 
-4. Run `npm run check`. You should see the new count in `site/data/catalog.json`.
-5. Commit both files and the regenerated catalog. On CI, the catalog is **rebuilt** from the actual lesson folders before deployment.
-6. Dashboard navigation automatically shows the new lesson; no manual changes to `index.html` or `dashboard.js`.
+5. Run `npm run check`, verify rendering on desktop and mobile, and review code examples against the correct Elastic API version.
+6. Commit the lesson HTML, metadata and generated catalogue files, ideally in one PR.
+7. Once merged, the dashboard automatically lists the new lesson. No manual editing of the dashboard is necessary.
 
-**Do not create empty placeholder HTML files.** Future modules are visible through the roadmap, while only published lessons become clickable.
+Only actual lessons with valid HTML + metadata are shown as published. Unwritten lessons remain visible in the plan as “В разработке”.
 
-## Information boundaries
+## Verify and troubleshoot
 
-| Where | What | Never place here |
-| --- | --- | --- |
-| GitHub repo | HTML lessons, code, tests, source references, and publication catalog | passwords, private data, secret tokens |
-| Google Sheets | personal educational progress, scores, weak areas, code-review evidence | API keys |
-| Dashboard | module & lesson navigation, number of *published lessons* | fabricated skill mastery |
+```bash
+npm run build
+npm test
+npm run check
+```
 
-The dashboard displays **publication readiness**, not the learner's verified educational progress. To show private scores in the website later, we need an explicitly authorized authenticated backend or sanitized private data flow; no Google Sheets API key is embedded in frontend code.
+GitHub Actions validates generation, tests, and ensures the catalogue is committed. It does not deploy the site publicly. The dashboard CSS and interaction logic live in `site/index.html` for easy static hosting; the generator and lesson metadata remain separate.
 
-## Hosting
+## Project principles
 
-`.github/workflows/academy-pages.yml` automatically builds, tests and deploys the `site/` directory to GitHub Pages when Pages is enabled, supported by the GitHub plan, and repository Actions variable `ENABLE_PAGES` is set to `true`. The deployment is public even for eligible private repositories. Do not publish private scores or secrets into the site. Until you deliberately set `ENABLE_PAGES=true`, GitHub Actions runs validation only and does not publish the website. If the current GitHub plan does not permit Pages for private repos, use the localhost workflow or a suitably access-controlled static hosting solution, and keep the repository private.
+**Never confuse** published learning content with learner knowledge. GitHub stores lessons and source code; Google Sheets stores mastery scores, lab outcomes, evidence, weaknesses and re-review dates. Do not commit API keys, real credentials, identifiable production data, or private learner results.
 
-## Initial modules
+Official documentation: https://www.elastic.co/docs
+Progress tracker: https://docs.google.com/spreadsheets/d/1RAOCwPvpiUlYKvzrWvx7bxCZuvduTQ9TslzMvbG4WKM/edit
 
-M00–M18 live in `site/data/roadmap.json`. The initial set contains 19 modules, 137 planned lessons and 3 published HTML lessons. Modules are added to dashboard through the roadmap; lessons are added from their metadata and HTML files.
+## Files
 
-## Quality gate (before merging)
+- `site/index.html` — navigation dashboard
+- `site/data/roadmap.json` — planned modules and lessons
+- `site/data/catalog.json`, `catalog.js` — autogenerated published catalogue
+- `site/lessons/MXX-LYY/` — lessons and metadata
+- `scripts/build-catalog.mjs` — navigation generator
+- `tests/` — catalogue tests
+- `templates/` — lesson design starter
+- `.github/workflows/` — continuous integration
+- `MODULE_CHAT_CONTRACT.md` — cross-chat rules
+- `PROJECT_INSTRUCTIONS.md` — Academy mentor instructions
 
-- Clear learning objectives, prerequisites and step-by-step explanation
-- Rich but accurate diagrams / interactive simulations (label approximations)
-- Runnable or clearly versioned code examples
-- Lab assignment with acceptance criteria and self-check
-- Accessibility: responsive, keyboard navigation, semantic HTML and reduced-motion option
-- Security: synthetic data, no credentials, no implicit production settings
-- `npm run check` passes
-- Manual browser review at desktop and mobile widths
-- Review of lesson code and conceptual correctness by mentor
+## Publishing and privacy
 
-## Tracker
-
-<https://docs.google.com/spreadsheets/d/1RAOCwPvpiUlYKvzrWvx7bxCZuvduTQ9TslzMvbG4WKM/edit>
-
-## Lesson design system
-
-New module chats should start from `templates/lesson-template.html` and adapt all explanations, simulators, quizzes and code to the actual subject. The placeholder example is **not** published to the navigation. Always create a new `lesson.json` next to the final HTML. Each lesson can use inline CSS/JS for offline portability, or reusable JS/CSS assets as the course grows. Do not distribute an unfinished template as a lesson.
+GitHub Pages hosting is not enabled. A private GitHub repository does **not** guarantee that a Pages deployment is private. Review GitHub plan/visibility before publishing any site. For now, use a localhost server or another intentionally access-controlled hosting option.
