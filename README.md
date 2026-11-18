@@ -5,12 +5,12 @@ A GitHub-backed learning platform for Elasticsearch, .NET, TypeScript, distribut
 ## Current state
 
 - 19 planned modules and 137 lesson slots in `site/data/roadmap.json`.
-- 3 published interactive HTML lessons.
+- 0 published HTML lessons — restarting the Academy from M00-L01 (2026-11-18).
 - Responsive, searchable learning dashboard: `site/index.html`.
 - Automated lesson discovery: `scripts/build-catalog.mjs`.
 - Catalogue published as `site/data/catalog.json` and `site/data/catalog.js` (offline mode).
 - Verified learner progress is held **separately** in Google Sheets, not in this repo.
-- The repository is private and there is **no public site deployment** by default.
+- The repository is public. GitHub Pages is configured through GitHub Actions; deployment must succeed before the site is considered live.
 
 ## Start locally
 

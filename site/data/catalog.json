@@ -26,36 +26,7 @@
           "title": "Разбор результатов и персональная карта пробелов"
         }
       ],
-      "lessons": [
-        {
-          "id": "M00-L01",
-          "moduleId": "M00",
-          "title": "Введение в академию",
-          "summary": "Правила прохождения курса, проверки и работа с трекером.",
-          "durationMinutes": 90,
-          "kind": "Interactive lesson",
-          "tags": [
-            "Orientation",
-            "Tracker"
-          ],
-          "publishedAt": "2026-11-18",
-          "href": "lessons/M00-L01/index.html"
-        },
-        {
-          "id": "M00-L02",
-          "moduleId": "M00",
-          "title": "Диагностика знаний",
-          "summary": "HTTP, JSON, SQL, Docker и основы поиска: базовый тест.",
-          "durationMinutes": 90,
-          "kind": "Diagnostic",
-          "tags": [
-            "Assessment",
-            "Foundations"
-          ],
-          "publishedAt": "2026-11-18",
-          "href": "lessons/M00-L02/index.html"
-        }
-      ]
+      "lessons": []
     },
     {
       "id": "M01",
@@ -92,23 +63,7 @@
           "title": "Мини-проект: объясни архитектуру и проектируй каталог"
         }
       ],
-      "lessons": [
-        {
-          "id": "M01-L01",
-          "moduleId": "M01",
-          "title": "Elasticsearch vs PostgreSQL",
-          "summary": "Индекс, поиск, архитектурные компромиссы и интерактивные модели.",
-          "durationMinutes": 80,
-          "kind": "Interactive lesson",
-          "tags": [
-            "Inverted Index",
-            "Architecture",
-            "REST"
-          ],
-          "publishedAt": "2026-11-18",
-          "href": "lessons/M01-L01/index.html"
-        }
-      ]
+      "lessons": []
     },
     {
       "id": "M02",
