@@ -1,0 +1,16 @@
+{
+  "id": "M00-L02",
+  "moduleId": "M00",
+  "title": "Диагностический тест: HTTP, JSON, SQL, Docker, поиск",
+  "summary": "Диагностический интерактивный урок по HTTP, JSON, SQL, Docker и Search: тренажёры и 20 вопросов, без проходного балла.",
+  "durationMinutes": 120,
+  "kind": "Interactive diagnostic",
+  "tags": [
+    "HTTP",
+    "JSON",
+    "SQL",
+    "Docker",
+    "Search"
+  ],
+  "publishedAt": "2026-11-18"
+}

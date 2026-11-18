@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="M00-L02 — понятная диагностика HTTP, JSON, SQL, Docker и поиска: тренажёры и задания.">
+<title>M00-L02 · Диагностика HTTP, JSON, SQL, Docker и поиска</title>
+<link rel="icon" href="../../assets/icon.svg">
+<style>
+:root{color-scheme:dark;--bg:#091525;--panel:#13263b;--card:#1d344a;--tint:#143548;--text:#eff7ff;--muted:#bdcddf;--border:#426079;--blue:#92d2ff;--mint:#84e7cb;--bad:#ffb7a6;--shadow:0 18px 40px #0002;font:17px/1.65 Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+:root.light{color-scheme:light;--bg:#f4f8fb;--panel:#fff;--card:#ecf3f9;--tint:#e6f6f4;--text:#183047;--muted:#476279;--border:#adc4d3;--blue:#096094;--mint:#006f55;--bad:#b03231;--shadow:0 14px 36px #18415b14}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:86px}body{margin:0;background:var(--bg);color:var(--text)}h1,h2,h3{letter-spacing:-.03em;line-height:1.2}h1{font-size:clamp(2.4rem,5.5vw,4.15rem);margin:12px 0}h2{font-size:clamp(1.6rem,3vw,2.1rem);margin:6px 0 16px}h3{font-size:1.16rem}p,li{max-width:76ch}a{color:var(--blue);text-underline-offset:4px}small,.muted{color:var(--muted)}
+.wrap{max-width:1130px;margin:auto;padding-inline:clamp(17px,4vw,45px)}.skip{position:absolute;left:-9999px;top:8px;z-index:90}.skip:focus{left:10px;padding:10px;background:var(--panel)}header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--border)}.top{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:11px;font-weight:800;text-decoration:none}.brand img{width:31px;height:31px}
+button,input,select,textarea{font:inherit;color:inherit}button,select,textarea{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 13px}button{cursor:pointer;font-weight:720}button:hover{border-color:var(--mint)}button.primary{background:var(--blue);color:#051f31;border-color:var(--blue)}button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+.hero{padding:55px 0 22px}.eyebrow{letter-spacing:.12em;text-transform:uppercase;color:var(--mint);font-size:.78rem;font-weight:840}.lead{max-width:70ch;font-size:clamp(1.05rem,2vw,1.23rem)}.tags,.nav,.controls{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.tag{border:1px solid var(--border);border-radius:100px;padding:5px 12px;color:var(--muted);font-size:.85rem}.nav{padding-top:20px}.nav a{border:1px solid var(--border);background:var(--panel);padding:8px 12px;border-radius:10px;font-weight:670;text-decoration:none}
+section{margin:20px 0;border:1px solid var(--border);border-radius:20px;padding:clamp(19px,3.4vw,34px);background:var(--panel);box-shadow:var(--shadow)}.section-id{font-size:.77rem;text-transform:uppercase;letter-spacing:.11em;color:var(--mint);font-weight:840}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:19px;min-width:0}.tile h3{margin:8px 0}.tile p:last-child{margin-bottom:0}.index{color:var(--mint);font-weight:820}.note{margin:17px 0;background:var(--tint);border-left:4px solid var(--mint);border-radius:10px;padding:15px 18px}.note p{margin:0}.steps{padding-left:25px}.steps li{margin:10px 0;padding-left:5px}.steps li::marker{color:var(--mint);font-weight:800}
+.flow{display:flex;align-items:stretch;margin:19px 0;gap:7px}.flow .node{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;min-width:0}.node small,.node strong{display:block}.arrow{display:flex;align-items:center;color:var(--mint);font-size:1.3rem}.field{display:flex;flex-direction:column;gap:8px;font-weight:710;min-width:0}.field select,.field textarea{width:100%}.field small{font-weight:400}.sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:17px 0}
+pre{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:auto;padding:16px;font-size:.85rem;line-height:1.65}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{background:var(--card);padding:1px 4px;border-radius:5px;font-size:.92em}pre code{background:transparent;padding:0;font-size:1em}output.result{display:block;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--tint);border:1px solid var(--border);padding:16px;border-radius:12px;min-height:52px;margin-top:14px}
+textarea{width:100%;min-height:146px;resize:vertical;line-height:1.5}textarea.short{min-height:108px}details{background:var(--card);border:1px solid var(--border);border-radius:12px;margin:12px 0;padding:12px 17px}summary{cursor:pointer;font-weight:740}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:410px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:var(--mint)}
+.question-group{margin-top:29px}.question-group>h3{border-bottom:1px solid var(--border);padding-bottom:11px}.question{padding:19px;border:1px solid var(--border);border-radius:14px;background:var(--card);margin:14px 0}.question fieldset{border:0;min-width:0;padding:0;margin:0}.question legend{font-weight:750;margin-bottom:9px}.question label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;cursor:pointer}.question input[type=radio]{margin-top:7px;accent-color:var(--mint);width:17px;height:17px;flex-shrink:0}.question textarea{margin-top:8px}.question .qid{color:var(--mint);font-weight:830}
+.progress{height:9px;border-radius:999px;background:var(--card);border:1px solid var(--border);overflow:hidden}.progress span{display:block;height:100%;background:var(--mint);width:0;transition:width .2s}.statusline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 13px}footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:20px;padding-bottom:55px}
+@media(max-width:800px){.grid,.two,.sim-grid{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{justify-content:center}.arrow::after{content:"↓"}.arrow span{display:none}.hero{padding-top:28px}.brand{font-size:.89rem}.brand img{width:25px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress span{transition:none}}
+</style></head>
+<body>
+<a class="skip" href="#main">К содержанию урока</a>
+<header><nav class="wrap top" aria-label="Академия"><a class="brand" href="../../index.html"><img src="../../assets/icon.svg" alt="">Elasticsearch Academy</a><button id="theme" type="button" aria-label="Переключить тему">Светлая тема</button></nav></header>
+<main id="main" class="wrap">
+<div class="hero"><span class="eyebrow">M00-L02 · Foundation · Orientation &amp; Diagnostics</span>
+<h1>Диагностика: HTTP, JSON, SQL, Docker и поиск</h1>
+<p class="lead">Этот урок поможет определить твой стартовый уровень. Сначала мы разберём простые примеры и потренируемся. Потом ты самостоятельно ответишь на вопросы по пяти технологиям. <strong>Это диагностика без проходного балла — «не знаю» здесь допустимый ответ.</strong></p>
+<div class="tags"><span class="tag">120 минут — ориентир</span><span class="tag">Нужен только браузер</span><span class="tag">20 вопросов</span><span class="tag">Никаких реальных серверов</span></div>
+<nav class="nav" aria-label="Быстрая навигация"><a href="#overview">Маршрут</a><a href="#http">HTTP</a><a href="#json">JSON</a><a href="#sql">SQL</a><a href="#docker">Docker</a><a href="#search">Search</a><a href="#diagnostic">Вопросы</a><a href="#submit">Сдать</a></nav></div>
+<section id="overview"><span class="section-id">01 · Зачем это знать</span><h2>Путь запроса в реальном приложении</h2>
+<p>Представь интернет-магазин: интерфейс Next.js отправляет HTTP-запрос на ASP.NET Core API, а сервер обращается к PostgreSQL и Elasticsearch. Именно поэтому инженеру поиска нужны не только знания Elasticsearch, но и понимание HTTP, JSON, SQL и Docker.</p>
+<div class="flow" role="img" aria-label="Next.js передает запрос ASP.NET Core, а API обращается к PostgreSQL и Elasticsearch"><div class="node"><strong>Next.js</strong><small>Пользовательский интерфейс</small></div><div class="arrow" aria-hidden="true"><span>→</span></div><div class="node"><strong>ASP.NET Core</strong><small>HTTP + JSON API</small></div><div class="arrow" aria-hidden="true"><span>→</span></div><div class="node"><strong>PostgreSQL + Elasticsearch</strong><small>Данные и поиск</small></div></div>
+<div class="grid"><div class="tile"><span class="index">01 HTTP</span><h3>Запрос и ответ</h3><p>Методы GET / POST и коды 200 / 404.</p></div><div class="tile"><span class="index">02 JSON</span><h3>Данные</h3><p>Строки, числа, массивы и синтаксис.</p></div><div class="tile"><span class="index">03 SQL</span><h3>Таблицы</h3><p>SELECT, WHERE и ORDER BY.</p></div><div class="tile"><span class="index">04 Docker</span><h3>Запуск</h3><p>Image, container, volume.</p></div><div class="tile"><span class="index">05 Search</span><h3>Поиск</h3><p>Поисковый индекс и обработка текста.</p></div><div class="tile"><span class="index">06 Результат</span><h3>Диагностика</h3><p>Карта сильных и слабых областей.</p></div></div>
+<div class="note"><p><strong>Как проходить:</strong> ознакомься с примерами → понажимай кнопки тренажёров → ответь на вопросы → скопируй отчёт в чат. Тренировочные блоки не оцениваются. На диагностике правильные ответы не показываются заранее.</p></div></section>
+<section id="http"><span class="section-id">02 · Тренировка · HTTP</span><h2>Как клиент и сервер общаются?</h2>
+<p><strong>HTTP</strong> — протокол обмена данными. <strong>Request</strong> — запрос клиента (метод, адрес, иногда тело), <strong>Response</strong> — ответ сервера (статус, заголовки, иногда тело).</p>
+<div class="tile"><h3>Разобранный пример</h3><pre><code>GET /api/products/1
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id":1,"title":"Чай"}</code></pre><p><code>GET</code> просит получить товар; <code>200</code> означает успех, <code>404</code> — ресурс не найден, <code>400</code> — некорректный запрос. Ошибку сервера обычно отражают статусы <code>5xx</code>.</p></div>
+<h3>Интерактивный запрос</h3><p>В модели существует товар №1. Выбери действие и посмотри, что возвращает вымышленный сервер.</p>
+<div class="sim-grid"><label class="field">Действие<select id="http-action"><option value="get">GET — получить товар 1</option><option value="missing">GET — получить отсутствующий товар 99</option><option value="create">POST — создать товар</option><option value="invalid">POST — создать товар без названия</option></select></label><div class="field"><span>Запуск</span><button type="button" id="http-run" class="primary">Отправить учебный запрос</button></div></div><output id="http-out" class="result" aria-live="polite">Здесь появятся запрос, статус и ответ.</output>
+<details><summary>Почему GET и POST — не одно и то же?</summary><p>GET предназначен для получения представления ресурса и не должен менять состояние сервера; POST передаёт данные на обработку, например для создания ресурса. Поведение задаётся конкретным API.</p></details></section>
+<section id="json"><span class="section-id">03 · Тренировка · JSON</span><h2>Как устроен формат данных?</h2>
+<p><strong>JSON</strong> — текстовый формат. Объекты используют фигурные скобки <code>{ }</code>, массивы — квадратные <code>[ ]</code>, а имена полей и текстовые строки пишутся в двойных кавычках.</p>
+<div class="tile"><h3>Разобранный пример</h3><pre><code>{
+  "id": 1,
+  "title": "Чай",
+  "price": 49.5,
+  "inStock": true,
+  "tags": ["напитки", "чай"]
+}</code></pre><p><code>id</code> и <code>price</code> — числа, <code>title</code> — строка, <code>inStock</code> — логическое значение, <code>tags</code> — массив. JSON не допускает одинарных кавычек вокруг строк и лишней запятой после последнего поля.</p></div>
+<h3>Проверь JSON самостоятельно</h3><div class="controls"><button type="button" id="json-good">Корректный пример</button><button type="button" id="json-bad">Пример с ошибкой</button></div>
+<label class="field" for="json-input">JSON-текст<textarea id="json-input" spellcheck="false">{
+  "title": "Кофе",
+  "price": 80,
+  "inStock": true
+}</textarea><small>Можешь редактировать текст. Проверка происходит в браузере.</small></label>
+<div class="controls"><button type="button" id="json-run" class="primary">Проверить JSON</button></div><output id="json-out" class="result" aria-live="polite">Парсер пока не запускался.</output></section>
+<section id="sql"><span class="section-id">04 · Тренировка · SQL</span><h2>Как выбрать данные из таблицы?</h2>
+<p><strong>SQL</strong> — язык работы с реляционными базами. <code>SELECT</code> задаёт нужные поля, <code>FROM</code> — таблицу, <code>WHERE</code> — фильтр, <code>ORDER BY</code> — сортировку.</p>
+<div class="table-wrap"><table><thead><tr><th>id</th><th>title</th><th>price</th><th>category</th></tr></thead><tbody><tr><td>1</td><td>Чай</td><td>40</td><td>drinks</td></tr><tr><td>2</td><td>Кофе</td><td>90</td><td>drinks</td></tr><tr><td>3</td><td>Книга</td><td>150</td><td>books</td></tr><tr><td>4</td><td>Словарь</td><td>120</td><td>books</td></tr></tbody></table></div>
+<div class="tile"><h3>Разобранный пример</h3><pre><code>SELECT id, title
+FROM products
+WHERE price >= 90
+ORDER BY price DESC;</code></pre><p>Выбираем ID и названия товаров с ценой от 90 и сортируем их от большей цены к меньшей. Столбец сортировки не обязательно выводить через SELECT.</p></div>
+<h3>Симулятор SELECT</h3><div class="sim-grid"><label class="field">Минимальная цена<select id="sql-price"><option value="0">0</option><option value="90">90</option><option value="120">120</option></select></label><label class="field">Категория<select id="sql-cat"><option value="all">Все</option><option value="drinks">drinks</option><option value="books">books</option></select></label></div>
+<div class="controls"><button type="button" id="sql-run" class="primary">Выполнить учебный SELECT</button></div><output id="sql-out" class="result" aria-live="polite">Выбери условия и нажми кнопку.</output><p class="muted">Симуляция работает с четырьмя строками; PostgreSQL не подключается.</p></section>
+<section id="docker"><span class="section-id">05 · Тренировка · Docker</span><h2>Image, Container и Volume</h2>
+<p><strong>Docker Image</strong> (образ) — шаблон с файлами приложения. <strong>Container</strong> — экземпляр образа, в котором запускается процесс. <strong>Volume</strong> — отдельное управляемое хранилище, которое может сохраняться после удаления контейнера.</p>
+<div class="flow" role="img" aria-label="Dockerfile используется для сборки Image, из Image запускают Container, к контейнеру подключают Volume"><div class="node"><strong>Dockerfile</strong><small>Инструкции сборки</small></div><div class="arrow" aria-hidden="true"><span>→</span></div><div class="node"><strong>Image</strong><small>Шаблон</small></div><div class="arrow" aria-hidden="true"><span>→</span></div><div class="node"><strong>Container + Volume</strong><small>Запуск и данные</small></div></div>
+<div class="tile"><h3>Разобранный пример</h3><pre><code>docker run --name demo -p 8080:80 example-app:1</code></pre><p>Образ <code>example-app:1</code> запускают в контейнере <code>demo</code>. Порт 8080 на компьютере направлен в порт 80 контейнера. Здесь ничего запускать не нужно.</p></div>
+<h3>Выбери понятие</h3><div class="controls" role="group" aria-label="Термины Docker"><button data-docker="image" type="button" aria-pressed="true">Image</button><button data-docker="container" type="button" aria-pressed="false">Container</button><button data-docker="volume" type="button" aria-pressed="false">Volume</button></div><output id="docker-out" class="result" aria-live="polite"></output>
+<div class="note"><p>Важно: контейнер и том не заменяют backup. Открытие порта и запуск без ограничений — не готовая production-конфигурация.</p></div></section>
+<section id="search"><span class="section-id">06 · Тренировка · Search</span><h2>Где находится поиск в архитектуре?</h2>
+<p>PostgreSQL часто остаётся <strong>источником истины</strong> для цен и заказов, а Elasticsearch — поисковой проекцией данных. Обновления могут появляться в поиске с задержкой: это один из примеров <em>eventual consistency</em> (итоговая согласованность).</p>
+<div class="tile"><h3>Первый взгляд на REST Elasticsearch 9.x</h3><pre><code>GET /products/_search
+{
+  "query": {
+    "match": {
+      "title": "чай"
+    }
+  }
+}</code></pre><p>Запрос ищет по полю <code>title</code> индекса <code>products</code>. Конкретная выдача зависит от mapping, analyzer и параметров Query DSL. Детально изучим это позже.</p></div>
+<h3>Тренажёр поиска по строкам</h3><p>Это <strong>учебная модель</strong>, а не точная эмуляция Elasticsearch. Каталог: P1 — «Чай», P2 — «чай», P3 — «Кофе».</p><div class="sim-grid"><label class="field">Сравнение<select id="search-mode"><option value="exact">С учётом регистра</option><option value="fold">Без учёта регистра</option></select></label><label class="field">Запрос<select id="search-query"><option>Чай</option><option>чай</option><option>КОФЕ</option><option>Сок</option></select></label></div>
+<div class="controls"><button type="button" id="search-run" class="primary">Найти товары</button></div><output id="search-out" class="result" aria-live="polite">Нажми кнопку, чтобы увидеть найденные ID.</output>
+<details><summary>Почему Elasticsearch может вернуть другой результат?</summary><p>Его поведение зависит от типа поля (например, text или keyword), анализатора текста и конкретного вида запроса. Дополнительно может влиять релевантность. Наш пример лишь сравнивает строки.</p></details>
+<div class="tile"><h3>Связь с C# и TypeScript</h3><p>Оба примера ниже вызывают <strong>собственное API</strong> магазина, а не Elasticsearch напрямую из браузера. Ключи Elasticsearch нельзя хранить в frontend.</p><div class="grid two"><div><strong>C# / HttpClient</strong><pre><code>var item = await httpClient
+    .GetFromJsonAsync&lt;Product&gt;(
+        "/api/products/1");</code></pre></div><div><strong>TypeScript / fetch</strong><pre><code>const res = await fetch("/api/products/1");
+if (!res.ok) throw new Error("HTTP error");
+const item = await res.json();</code></pre></div></div></div></section>
+<section id="diagnostic"><span class="section-id">07 · Самостоятельная диагностика</span><h2>20 вопросов — честно, без готовых ответов</h2>
+<p>По каждой из пяти тем — три вопроса с выбором ответа и один открытый. Отвечай по памяти, как понимаешь сейчас. Вариант «Не знаю» — полноценный диагностический ответ. <strong>Правильные ответы на странице не показываются:</strong> мы разберём их вместе после твоей сдачи.</p>
+<div class="tile"><div class="statusline"><strong>Заполнено ответов</strong><strong id="counter">0 / 20</strong></div><div class="progress" aria-hidden="true"><span id="bar"></span></div><p id="diagnostic-status" class="muted" aria-live="polite">Выбери любой вопрос для начала.</p></div>
+<div id="questions" aria-label="Диагностический тест"></div>
+<div class="note"><p>Цель M00 — определить пробелы, а не сдать экзамен с порогом 80%. Если чего-то не знаешь, это полезный результат диагностики.</p></div></section>
+<section id="submit"><span class="section-id">08 · Сдача</span><h2>Как отправить ответы наставнику?</h2>
+<ol class="steps"><li>Заполни вопросы по пяти темам. Можно написать «не знаю».</li><li>Нажми <strong>«Сформировать отчёт»</strong>: ниже появятся твои ответы.</li><li>Нажми <strong>«Скопировать отчёт»</strong>, затем вставь его в чат.</li><li>Я проверю ответы и зафиксирую сильные стороны, ошибки и нужные повторения в Google Sheets после Code Review.</li></ol>
+<div class="controls"><button id="make-report" type="button" class="primary">Сформировать отчёт</button><button id="copy-report" type="button">Скопировать отчёт</button></div>
+<label class="field" for="report">Отчёт для отправки<textarea id="report" readonly placeholder="Отчёт появится после нажатия кнопки."></textarea><small>Важное ограничение: страница не отправляет данные в ChatGPT и не выставляет Verified автоматически.</small></label>
+<output id="report-out" class="result" aria-live="polite">Отчёт ещё не сформирован.</output>
+<h3>Критерии завершения диагностики</h3><div class="table-wrap"><table><thead><tr><th>Этап</th><th>Что нужно сделать</th></tr></thead><tbody><tr><td>Опрос</td><td>Ответить по пяти категориям, допустимо «не знаю»</td></tr><tr><td>Самостоятельность</td><td>Записать собственные рассуждения в открытых вопросах</td></tr><tr><td>Code Review</td><td>Получить разбор и персональную карту пробелов</td></tr><tr><td>Tracker</td><td>Подтвердить запись результата и рекомендаций</td></tr></tbody></table></div>
+<p class="muted">У диагностического модуля M00 нет обязательного проходного балла. Серьёзные пробелы могут стать задачами повторения, но низкая диагностическая оценка сама по себе не повод для наказания.</p></section>
+<section id="references"><span class="section-id">09 · Источники</span><h2>Документация и следующий шаг</h2>
+<ul><li><a href="https://www.elastic.co/docs/api/doc/elasticsearch/v9/operation/operation-search">Elasticsearch Search REST API v9</a></li><li><a href="https://www.elastic.co/docs/solutions/search/get-started/index-basics">Elastic: документы и индексы</a></li><li><a href="https://www.elastic.co/docs/explore-analyze/query-filter/tools/console">Elastic: Console</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods">MDN: HTTP methods</a> и <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">HTTP status codes</a></li><li><a href="https://www.json.org/json-en.html">JSON format</a></li><li><a href="https://www.postgresql.org/docs/current/tutorial-sql.html">PostgreSQL SQL tutorial</a></li><li><a href="https://docs.docker.com/get-started/docker-overview/">Docker overview</a></li></ul>
+<p class="muted">Проверено 18.11.2026. В этом уроке не выполняются реальные запросы к Elasticsearch; пример REST соответствует синтаксису документации v9. Подробную настройку среды и API изучим позже.</p>
+</section></main><footer class="wrap"><a href="../../index.html">← Academy Dashboard</a><a href="#overview">↑ В начало урока</a></footer>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+function setTheme(light){document.documentElement.classList.toggle("light",light);el("theme").textContent=light?"Тёмная тема":"Светлая тема";}
+let stored=null;try{stored=localStorage.getItem("academy-theme");}catch(err){}
+setTheme(stored!==null?stored==="light":window.matchMedia("(prefers-color-scheme: light)").matches);
+el("theme").addEventListener("click",()=>{const light=!document.documentElement.classList.contains("light");setTheme(light);try{localStorage.setItem("academy-theme",light?"light":"dark");}catch(err){}});
+const responses={
+get:{req:"GET /api/products/1",status:"200 OK",body:'{"id":1,"title":"Чай"}',why:"Товар существует."},
+missing:{req:"GET /api/products/99",status:"404 Not Found",body:'{"error":"Not found"}',why:"Такого товара нет."},
+create:{req:'POST /api/products\n{"title":"Сок"}',status:"201 Created",body:'{"id":2,"title":"Сок"}',why:"В учебной модели создан ресурс."},
+invalid:{req:'POST /api/products\n{"title":""}',status:"400 Bad Request",body:'{"error":"Title required"}',why:"Запрос не прошёл валидацию."}
+};
+el("http-run").addEventListener("click",()=>{const r=responses[el("http-action").value];el("http-out").textContent="REQUEST\n"+r.req+"\n\nRESPONSE\nHTTP/1.1 "+r.status+"\n"+r.body+"\n\n"+r.why;});
+const good='{\n  "title": "Кофе",\n  "price": 80,\n  "inStock": true\n}';
+const bad='{\n  "title": "Кофе",\n  "price": 80,\n}';
+el("json-good").addEventListener("click",()=>{el("json-input").value=good;el("json-out").textContent="Нажми «Проверить JSON».";});
+el("json-bad").addEventListener("click",()=>{el("json-input").value=bad;el("json-out").textContent="Найди ошибку в тексте и проверь себя.";});
+el("json-run").addEventListener("click",()=>{try{const data=JSON.parse(el("json-input").value);el("json-out").textContent="JSON корректен ✓\n"+JSON.stringify(data,null,2);}catch(e){el("json-out").textContent="JSON содержит ошибку ✕\n"+e.message+"\nПроверь кавычки, скобки и запятые."; }});
+const products=[{id:1,title:"Чай",price:40,category:"drinks"},{id:2,title:"Кофе",price:90,category:"drinks"},{id:3,title:"Книга",price:150,category:"books"},{id:4,title:"Словарь",price:120,category:"books"}];
+el("sql-run").addEventListener("click",()=>{const price=Number(el("sql-price").value),cat=el("sql-cat").value;const found=products.filter(p=>p.price>=price&&(cat==="all"||p.category===cat)).sort((a,b)=>b.price-a.price);el("sql-out").textContent="SELECT id, title, price FROM products\nWHERE price >= "+price+(cat==="all"?"":" AND category = '"+cat+"'")+"\nORDER BY price DESC;\n\nРезультат: "+(found.length?found.map(x=>x.id+" | "+x.title+" | "+x.price).join("\n"):"∅");});
+const docker={image:"IMAGE — шаблон для создания контейнеров. Из одного образа можно создавать несколько экземпляров.",container:"CONTAINER — экземпляр образа с процессом и собственным записываемым слоем. Этот слой не следует считать постоянным хранилищем.",volume:"VOLUME — хранилище отдельно от жизненного цикла контейнера. Его данные могут пережить удаление контейнера, пока не удалён сам том."};
+function showDocker(type){el("docker-out").textContent=docker[type];document.querySelectorAll("[data-docker]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.docker===type)));}
+document.querySelectorAll("[data-docker]").forEach(btn=>btn.addEventListener("click",()=>showDocker(btn.dataset.docker)));showDocker("image");
+const names=[["P1","Чай"],["P2","чай"],["P3","Кофе"]];
+el("search-run").addEventListener("click",()=>{const mode=el("search-mode").value,q=el("search-query").value;const norm=s=>mode==="fold"?s.toLocaleLowerCase("ru"):s;const hits=names.filter(x=>norm(x[1])===norm(q));el("search-out").textContent="Запрос: "+q+"\nНайдены: "+(hits.length?hits.map(x=>x[0]+" "+x[1]).join(", "):"∅");});
+const groups=[
+{name:"HTTP — клиент и сервер",questions:[
+{id:"H1",type:"mc",q:"Какой HTTP-метод предназначен для получения ресурса?",a:["GET","POST","DELETE","Не знаю"]},
+{id:"H2",type:"mc",q:"Сервер не нашёл товар по ID. Какой код ответа подходит лучше всего?",a:["200","404","500","Не знаю"]},
+{id:"H3",type:"mc",q:"Какой HTTP-статус часто возвращают при успешном создании нового ресурса?",a:["201 Created","403 Forbidden","503 Service Unavailable","Не знаю"]},
+{id:"H4",type:"text",q:"Объясни своими словами, из чего состоит HTTP-запрос и как клиент понимает, успешно ли завершился запрос."}]},
+{name:"JSON — формат данных",questions:[
+{id:"J1",type:"mc",q:"Какой вариант — корректный JSON-объект?",a:['{"price":20,"active":true}',"{'price':20}",'{"price":20,}',"Не знаю"]},
+{id:"J2",type:"mc",q:'Что означает ["api","search"] в JSON?',a:["Массив строк","Объект","Число","Не знаю"]},
+{id:"J3",type:"mc",q:'В чём разница между null и "null"?',a:["Отсутствие значения и текстовая строка","Разницы нет","Оба запрещены","Не знаю"]},
+{id:"J4",type:"text",q:"Составь JSON-объект товара с полями id (число), title (строка), inStock (boolean)."}]},
+{name:"SQL — таблицы и выборка",questions:[
+{id:"S1",type:"mc",q:"Какой SQL-оператор позволяет выбрать строки из таблицы?",a:["SELECT","DELETE","DROP","Не знаю"]},
+{id:"S2",type:"mc",q:"Что означает WHERE price >= 100?",a:["Цена не меньше 100","Сортировка по цене","Установить цену 100","Не знаю"]},
+{id:"S3",type:"mc",q:"Что означает ORDER BY title ASC?",a:["Сортировка по названию по возрастанию","Удаление дублей","Группировка","Не знаю"]},
+{id:"S4",type:"text",q:"Напиши SQL-запрос: получить id и title из products с stock > 0 и отсортировать по price по убыванию."}]},
+{name:"Docker — запуск приложения",questions:[
+{id:"D1",type:"mc",q:"Что точнее всего отличает Docker Image от Container?",a:["Image — шаблон, Container — экземпляр","Image — процесс, Container — файл","Разницы нет","Не знаю"]},
+{id:"D2",type:"mc",q:"Что означает docker run -p 8080:80?",a:["Порт 8080 хоста связан с портом 80 контейнера","Порт 80 хоста связан с портом 8080 контейнера","Запускается 8080 контейнеров","Не знаю"]},
+{id:"D3",type:"mc",q:"Как сохранить данные при замене контейнера?",a:["Docker Volume","Только writable layer","Флаг --rm","Не знаю"]},
+{id:"D4",type:"text",q:"Что случится с данными в записываемом слое контейнера и в именованном Docker Volume при удалении контейнера?"}]},
+{name:"Search — роль Elasticsearch",questions:[
+{id:"E1",type:"mc",q:"Зачем обычно используют Elasticsearch рядом с PostgreSQL в интернет-магазине?",a:["Для быстрого поиска и аналитики по данным","Чтобы автоматически заменить все транзакции","Чтобы хранить API-ключи в браузере","Не знаю"]},
+{id:"E2",type:"mc",q:"Что может влиять на результаты текстового запроса в Elasticsearch?",a:["Mapping, analyzer и тип запроса","Цвет кнопки","Имя браузера","Не знаю"]},
+{id:"E3",type:"mc",q:"В каком формате Elasticsearch принимает документы через REST API?",a:["JSON","Только CSV","Только XML","Не знаю"]},
+{id:"E4",type:"text",q:"Цена в PostgreSQL изменилась, а поиск какое-то время показывает прежнюю цену. Предложи возможную причину и шаг диагностики."}]}
+];
+const questions=groups.flatMap(g=>g.questions), answers=Object.create(null),host=el("questions");
+groups.forEach(group=>{const wrap=document.createElement("div");wrap.className="question-group";const h=document.createElement("h3");h.textContent=group.name;wrap.append(h);
+group.questions.forEach(q=>{const box=document.createElement("div");box.className="question";const fs=document.createElement("fieldset");const legend=document.createElement("legend");legend.textContent=q.id+" · "+q.q;fs.append(legend);
+if(q.type==="mc"){q.a.forEach((option,i)=>{const label=document.createElement("label"),input=document.createElement("input"),text=document.createElement("span");input.type="radio";input.name=q.id;input.value=option;input.addEventListener("change",()=>{answers[q.id]=option;updateCounter();});text.textContent=String.fromCharCode(65+i)+". "+option;label.append(input,text);fs.append(label);});}
+else{const area=document.createElement("textarea");area.className="short";area.rows=4;area.placeholder="Твоё объяснение или «не знаю»";area.setAttribute("aria-label","Ответ на "+q.id);area.addEventListener("input",()=>{answers[q.id]=area.value;updateCounter();});fs.append(area);}
+box.append(fs);wrap.append(box);});host.append(wrap);});
+function updateCounter(){const filled=questions.filter(q=>String(answers[q.id]??"").trim()).length;el("counter").textContent=filled+" / "+questions.length;el("bar").style.width=(filled/questions.length*100)+"%";el("diagnostic-status").textContent=filled===questions.length?"Ответы готовы для отправки.":"Отвечай по порядку или пропускай неизвестное, затем вернись к нему."; }
+function makeReport(){const filled=questions.filter(q=>String(answers[q.id]??"").trim()).length;const lines=["M00-L02 — диагностическая работа","Отвечено: "+filled+"/"+questions.length,"Без проходного балла. Ответы для Code Review."];groups.forEach(g=>{lines.push("","=== "+g.name+" ===");g.questions.forEach(q=>{const response=String(answers[q.id]??"").trim();const i=q.type==="mc"?q.a.indexOf(response):-1;lines.push(q.id+" · "+q.q,"Ответ: "+(response?(i<0?response:String.fromCharCode(65+i)+". "+response):"[не заполнено]"));});});lines.push("","Прошу проверить, объяснить ошибки и сохранить результат в Google Sheets.");return lines.join("\n");}
+el("make-report").addEventListener("click",()=>{el("report").value=makeReport();el("report-out").textContent="Отчёт готов. Скопируй текст и вставь его в чат.";});
+el("copy-report").addEventListener("click",async()=>{el("report").value=makeReport();try{await navigator.clipboard.writeText(el("report").value);el("report-out").textContent="Скопировано. Вставь отчёт в чат наставнику.";}catch(err){el("report").focus();el("report").select();el("report-out").textContent="Скопируй выделенный отчёт вручную (Ctrl+C).";}});
+updateCounter();
+</script></body></html>
