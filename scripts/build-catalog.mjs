@@ -23,7 +23,7 @@ for (const directory of (await readdir(join(root, 'lessons'), {withFileTypes:tru
   lessons.push({...metadata,href:'lessons/'+id+'/index.html'});
 }
 lessons.sort((a,b)=>a.id.localeCompare(b.id));
-const catalog={version:roadmap.version,builtAt:new Date().toISOString(),planned:roadmap.totalPlannedLessons,modules:modules.map(({id,title,track,lessons:count})=>({id,title,track,planned:count,lessons:lessons.filter(x=>x.moduleId===id)}))};
+const catalog={version:roadmap.version,builtAt:new Date().toISOString(),planned:roadmap.totalPlannedLessons,modules:modules.map(({id,title,track,lessons:count,topics})=>({id,title,track,planned:count,topics,lessons:lessons.filter(x=>x.moduleId===id)}))};
 await writeFile(join(root,'data/catalog.json'),JSON.stringify(catalog,null,2)+'\n','utf8');
 await writeFile(join(root,'data/catalog.js'),'window.ACADEMY_CATALOG = '+JSON.stringify(catalog)+';\n','utf8');
 console.log('Catalog built: '+modules.length+' modules · '+lessons.length+'/'+catalog.planned+' published lessons');
