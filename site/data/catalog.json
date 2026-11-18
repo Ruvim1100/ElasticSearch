@@ -26,7 +26,15 @@
           "title": "Разбор результатов и персональная карта пробелов"
         }
       ],
-      "lessons": []
+      "lessons": [
+        {
+          "id": "M00-L01",
+          "moduleId": "M00",
+          "title": "Цель курса, workflow, артефакты и критерии качества",
+          "durationMinutes": 120,
+          "href": "lessons/M00-L01/index.html"
+        }
+      ]
     },
     {
       "id": "M01",

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M00-L01 · Цель курса, workflow, артефакты и критерии качества</title>
+<link rel="icon" href="../../assets/icon.svg">
+<style>
+:root{color-scheme:dark;--bg:#0b1424;--panel:#13253a;--ink:#ebf4fc;--soft:#b4c8db;--line:#476179;--blue:#81caff;--mint:#75e5cb;--wash:#173546;font:17px/1.6 system-ui,sans-serif}
+:root.light{color-scheme:light;--bg:#f1f6fa;--panel:#fff;--ink:#152f46;--soft:#415d70;--line:#728b9e;--blue:#085e96;--mint:#006956;--wash:#e3f4f3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}.wrap{max-width:1080px;margin:auto;padding:0 clamp(16px,4vw,44px)}header,footer{padding:20px 0;border-block-end:1px solid var(--line)}nav,.links{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}a{color:var(--blue);text-underline-offset:4px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700}.brand img{width:32px}h1,h2,h3{line-height:1.15;text-wrap:balance}h1{font-size:clamp(2.35rem,6vw,4.3rem);letter-spacing:-.05em;margin:.3em 0}h2{font-size:clamp(1.55rem,3vw,2.1rem);margin:.2em 0 .7em}h3{font-size:1.15rem}.hero{padding:clamp(34px,6vw,72px) 0 24px}.hero p{max-width:68ch}.chip,dt{color:var(--mint);font-weight:750}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}.panel,section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin:20px 0}.panel{margin:0;background:var(--wash)}p,li,dd{max-width:76ch}dd{margin:0 0 12px}.soft,small{color:var(--soft)}button,select,input{font:inherit;accent-color:var(--blue)}button,select{background:var(--bg);color:var(--ink);border:1px solid var(--line);padding:9px 14px;border-radius:9px;max-width:100%}button,select,summary{cursor:pointer}summary{font-weight:650;padding:10px 0}label{display:block;margin:10px 0}input[type=range]{width:100%}input[type=checkbox]{width:18px;height:18px;vertical-align:middle}output{display:block;background:var(--wash);border-inline-start:4px solid var(--mint);padding:18px;margin-top:14px;border-radius:6px}pre{overflow:auto;background:var(--bg);padding:16px;border-radius:10px;font-size:.92rem}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:3px}li+li{margin-top:6px}.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:6px;background:var(--bg);padding:8px}.rail{display:flex;list-style:none;gap:5px;padding:0}.rail li{flex:1;margin:0;padding:8px 0;border-top:5px solid var(--line);font-size:.84rem}.rail .on{border-color:var(--mint);font-weight:bold}footer{margin-top:32px}@media(prefers-reduced-motion:no-preference){.rail li{transition:border-color .22s}}
+</style></head><body>
+<a class="skip" href="#main">К уроку</a>
+<header><nav class="wrap" aria-label="Академия"><a class="brand" href="../../index.html"><img src="../../assets/icon.svg" alt="">Academy Dashboard</a><button id="theme" type="button">Светлая тема</button></nav></header>
+<main class="wrap" id="main">
+<div class="hero"><span class="chip">Foundation / M00-L01</span><h1>Цель курса, workflow, артефакты и критерии качества</h1>
+<p>Представь ревью поиска в интернет-магазине. Коллега пишет «поиск работает». Какие данные позволят тебе повторить проверку и решить, можно ли принять работу?</p>
+<p class="soft">120 минут · Нужен браузер · Опыт Elasticsearch и установленный кластер не требуются</p>
+<div class="links"><a href="#model">Разобрать процесс ↓</a><a href="#lab">К лабораторной ↓</a><a href="#check">К вопросам ↓</a></div></div>
+<div class="grid"><div class="panel"><h2>Что освоишь</h2>Найдёшь источник учебного материала и источник оценки, соберёшь воспроизводимое свидетельство и объяснишь решение о переходе дальше.</div><div class="panel"><h2>Что сдашь</h2>Короткий отчёт о проверке поиска, ответы на пять вопросов и объяснение своими словами. План времени — 24 минуты на модель, 72 на эксперименты и лабораторную, по 12 на проверку и закрепление.</div></div>
+<section id="model"><h2>От страницы до проверенного навыка</h2>
+<p>Цель академии — уметь спроектировать поиск, измерить его качество и разобраться в сбое. Каждый урок заканчивается небольшим инженерным решением, которое коллега сможет проверить.</p>
+<dl><dt>Published · материал доступен</dt><dd>В GitHub лежат HTML и lesson.json. Генератор добавляет урок в каталог, GitHub Actions проверяет сборку и публикует Dashboard.</dd><dt>Studied · работа представлена</dt><dd>Ты изучил страницу, провёл эксперимент и прислал результаты. На Code Review наставник сверяет их с критериями приёмки. При расхождении возвращает конкретную проверку на исправление.</dd><dt>Verified · знания подтверждены</dt><dd>После ревью наставник записывает оценки, объяснение, evidence и итог в Google Sheets и перечитывает запись. По ней следующий чат находит точку продолжения.</dd></dl>
+<details><summary>Как выглядит evidence в проекте ASP.NET Core?</summary><p>Пусть Search API принимает «термос». В отчёте укажи версию приложения, исходный каталог, параметры запроса, ожидаемые ID и фактический ответ. С такой записью коллега сможет повторить проверку после изменения кода. Для расхождения сохрани исходный результат и добавь отдельный повторный запуск после исправления.</p></details></section>
+<section><h2>Симулятор ревью</h2><p>Проверь гипотезу: хватит ли идеальной теории при практике 89%? Перед изменением каждого условия предскажи результат.</p>
+<label><input type="checkbox" id="submitted"> Работа представлена</label>
+<div class="grid"><label>Теория · <b id="tv"></b>%<input type="range" id="theory" min="0" max="100" value="80"></label><label>Практика · <b id="pv"></b>%<input type="range" id="practice" min="0" max="100" value="89"></label></div>
+<label><input type="checkbox" id="explain"> Дано самостоятельное объяснение</label><label><input type="checkbox" id="saved"> Наставник подтвердил запись результатов в Tracker</label>
+<ol class="rail" aria-label="Этапы урока"><li>Published</li><li>Studied</li><li>Verified</li></ol><output id="verdict" aria-live="polite"></output><small>Учебная модель. Изменения действуют только на этой странице.</small></section>
+<section><h2>Playground · повтори чужой запуск</h2><p>У двух сборок разные настройки обработки регистра. Выбери сборку и запрос, сравни найденные ID. Затем реши, какие поля должен сохранить автор отчёта, чтобы ты воспроизвёл его результат.</p>
+<pre aria-label="Тестовый каталог">P1   Чай
+P2   чай
+P3   Кофе</pre>
+<div class="grid"><label>Версия поиска<br><select id="build"><option value="exact">v1 · точное равенство</option><option value="fold">v2 · без учёта регистра</option></select></label><label>Текст запроса<br><select id="query"><option>Чай</option><option>чай</option><option>Сок</option></select></label></div>
+<output id="hits" aria-live="polite"></output><small>Это локальная модель сравнения строк. Реальные запросы к Elasticsearch появятся в следующих модулях.</small></section>
+<section><h2>Ошибки при сдаче</h2><details><summary>В отчёте только скриншот выдачи</summary><p>По картинке трудно восстановить входные данные. Добавь запрос, версию, исходный набор и ID результата.</p></details><details><summary>Ожидание записано после запуска</summary><p>Так баг легко принять за требование. Сначала сформулируй ожидаемое поведение, затем запиши наблюдение и сравни их.</p></details><details><summary>Средняя оценка выглядит достаточной</summary><p>Пороги теории и практики проверяются отдельно. После исправления приложи новую попытку и укажи, что изменилось.</p></details></section>
+<section id="lab"><span class="chip">Самостоятельная лабораторная</span><h2>Можно ли принять сборку поиска?</h2>
+<p>Ты принимаешь поиск каталога для Next.js-витрины. Требование владельца: запрос находит все названия, равные ему без учёта регистра. Порядок ID произвольный. Используй три записи из Playground.</p>
+<ol><li>Выбери запрос с совпадениями и запрос без совпадений. Для каждого заранее запиши ожидаемые ID.</li><li>Прогони оба запроса на v1 и v2. Для каждого из четырёх запусков сохрани сборку, вход, ожидание, фактические ID и результат сравнения.</li><li>Передай коллеге инструкцию повторения с исходными данными. Реши, какую сборку примешь, и подкрепи вывод конкретным запуском.</li><li>Укажи, где хранится учебный материал и кто подтверждает результат. Своими словами объясни, что отделяет сдачу отчёта от Verified.</li></ol>
+<p><strong>Критерии приёмки · 100 баллов.</strong> Данные и шаги воспроизведения — 20, ожидания из требования — 20, четыре точных наблюдения — 30, вывод с доказательством — 20, корректная передача результата на ревью — 10. Для зачёта практики нужно 90.</p></section>
+<section id="check"><h2>Knowledge Check</h2><p>Пришли ответы вместе с отчётом. Каждый вопрос стоит 20 баллов, проходной результат — 80.</p><ol><li>Где найдёшь точную версию страницы и где проверишь последнюю подтверждённую компетенцию?</li><li>Страница доступна в Dashboard. Что можно заключить об ученике?</li><li>Теория 95, практика 89. Какое решение примет ревьюер и почему?</li><li>Два разработчика ввели одинаковый запрос и получили разные ID. Какие две детали эксперимента проверишь сначала?</li><li>Оценки достигли порогов. Что ещё требуется для перехода к следующему HTML?</li></ol><p><strong>Закрепление.</strong> Закрой страницу и за минуту объясни коллеге, как воспроизвести спорный результат и где найти решение ревьюера.</p></section>
+<section id="module"><h2>Модуль M00 · Ориентация и диагностика</h2><p>После подтверждения этого урока предстоят диагностика базовых знаний, работа с версиями документации и персональная карта пробелов. Итог M00 — диагностический профиль без проходного балла за экзамен.</p>
+<h3>Источники</h3><ul><li><a href="https://github.com/Ruvim1100/ElasticSearch/blob/main/PROJECT_INSTRUCTIONS.md">Стандарты практики и шкала Mastery</a></li><li><a href="https://github.com/Ruvim1100/ElasticSearch/blob/main/MODULE_CHAT_CONTRACT.md">Порядок работы в модуле</a></li><li><a href="https://www.elastic.co/docs/get-started/versioning-availability">Elastic Docs · версии и доступность функций</a> — ориентир для стека 9.x, проверено 18 ноября 2026. Урок обходится без вызовов API.</li></ul></section>
+</main><footer><nav class="wrap" aria-label="Навигация по курсу"><a href="../../index.html">← Academy Dashboard</a><a href="#module">К плану M00 ↑</a></nav></footer>
+<script>
+const get = id => document.getElementById(id);
+function setTheme(light) {
+  document.documentElement.classList.toggle('light',light);
+  get('theme').textContent = light ? 'Тёмная тема' : 'Светлая тема';
+}
+let theme;
+try { theme = localStorage.getItem('academy-theme'); } catch {}
+setTheme(theme ? theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches);
+get('theme').addEventListener('click', () => {
+  const light = !document.documentElement.classList.contains('light');
+  setTheme(light);
+  try { localStorage.setItem('academy-theme', light ? 'light' : 'dark'); } catch {}
+});
+function review() {
+  const theory = get('theory').valueAsNumber, practice = get('practice').valueAsNumber;
+  get('tv').textContent = theory;
+  get('pv').textContent = practice;
+  const missing = [];
+  if (theory < 80) missing.push('добрать по теории ' + (80-theory) + ' п. п.');
+  if (practice < 90) missing.push('добрать по практике ' + (90-practice) + ' п. п.');
+  if (!get('explain').checked) missing.push('объяснить решение своими словами');
+  if (!get('saved').checked) missing.push('подтвердить запись в Tracker');
+  let stage = 0, reason = 'Страница опубликована. Для ревью требуется работа ученика.';
+  if (get('submitted').checked) {
+    stage = missing.length ? 1 : 2;
+    reason = missing.length ? 'Работа сдана. Осталось ' + missing.join(', ') + '.' : 'Все критерии выполнены. Можно начать следующий урок.';
+  }
+  const steps = document.querySelectorAll('.rail li');
+  steps.forEach((step,index) => step.classList.toggle('on',index <= stage));
+  get('verdict').textContent = steps[stage].textContent + ' · ' + reason;
+}
+for (const id of ['submitted','theory','practice','explain','saved']) get(id).addEventListener('input',review);
+review();
+const products = [['P1','Чай'],['P2','чай'],['P3','Кофе']];
+function search() {
+  const fold = get('build').value === 'fold';
+  const normalize = value => fold ? value.toLocaleLowerCase('ru') : value;
+  const hits = products.filter(([,name]) => normalize(name) === normalize(get('query').value));
+  get('hits').textContent = 'Найдено: ' + hits.length + ' · ID: ' + (hits.map(([id]) => id).join(', ') || '∅') + '. ' + (fold ? 'Обе строки перед сравнением приведены к нижнему регистру.' : 'Сравнение сохраняет регистр каждой буквы.');
+}
+for (const id of ['build','query']) get(id).addEventListener('change',search);
+search();
+</script></body></html>
