@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Elasticsearch Engineering Academy — практическое изучение Elasticsearch, ASP.NET Core и поисковой инженерии">
+<title>Elasticsearch Engineering Academy — Learning Portal</title>
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color-scheme:dark;--bg:#080f1d;--surface:#111d30;--surface2:#17253b;--edge:#263a54;--text:#e8eff8;--muted:#96acc4;--accent:#4bb3ff;--accent2:#64e1b4;--shadow:0 24px 60px #01081372}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse 700px 480px at 78% -12%,#143f6150,transparent),radial-gradient(ellipse 530px 500px at -20% 25%,#16436b2c,transparent),var(--bg);color:var(--text);min-height:100vh}
+a{color:inherit} button,input,select{font:inherit}button{cursor:pointer}
+body.light{color-scheme:light;--bg:#f4f7fc;--surface:#fff;--surface2:#eaf0f8;--edge:#d2deeb;--text:#132538;--muted:#52677f;--accent:#086abc;--accent2:#078e66;--shadow:0 14px 38px #19335518}
+.container{max-width:1260px;margin:0 auto;padding:0 28px}
+header{border-bottom:1px solid var(--edge);background:#0b1729b8;backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}
+.light header{background:#ffffffdf}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:76px}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none;font-weight:780;letter-spacing:-.025em}
+.brand svg{width:38px;height:38px;flex-shrink:0}
+.brand small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.16em;margin-top:3px}
+.actions{display:flex;align-items:center;gap:10px}
+.btn,.chip{border:1px solid var(--edge);border-radius:12px;padding:10px 14px;background:var(--surface);color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:7px;font-weight:650}
+.btn:hover,.chip:hover{border-color:var(--accent)}
+.btn.primary{background:linear-gradient(125deg,#1792e7,#4ebfff);color:#031529;border:0}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,.module-card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.hero{padding:74px 0 55px;display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:45px}
+.eyebrow{font-size:12px;font-weight:750;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2)}
+h1{font-size:clamp(42px,5vw,68px);line-height:1.05;letter-spacing:-.055em;margin:16px 0 22px}
+h1 .accent{background:linear-gradient(105deg,#4bb3ff,#68ecbf);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:17px;line-height:1.7;color:var(--muted);max-width:640px}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.visual{background:linear-gradient(155deg,#112943,#0c1729);border:1px solid #315276;border-radius:26px;padding:25px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.visual:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 5%,#56b3ff22,transparent 45%);pointer-events:none}
+.visual-label{font-size:11px;letter-spacing:.14em;color:#87b4da;text-transform:uppercase;font-weight:800;margin-bottom:20px}
+.pipeline{display:flex;justify-content:space-between;align-items:center;gap:5px}
+.node{border:1px solid #3b6388;border-radius:13px;padding:16px 10px;min-width:0;flex:1;text-align:center;background:#172f48;font-size:12px;font-weight:750}
+.node svg{display:block;margin:0 auto 9px;width:24px;height:24px;stroke:#6ec4ff}
+.pipe-arrow{font-size:21px;color:#5fc4ed}
+.visual-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #274560;padding-top:18px;margin-top:21px;gap:8px;color:#98bad6;font-size:12px}
+.live-dot{display:inline-block;width:8px;height:8px;background:#64e1b4;border-radius:50%;box-shadow:0 0 0 4px #64e1b42c;margin-right:8px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:66px}
+.stat{background:var(--surface);border:1px solid var(--edge);border-radius:18px;padding:22px}
+.stat strong{font-size:32px;letter-spacing:-.05em;display:block}
+.stat span{font-size:13px;color:var(--muted)}
+.section-top{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:25px}
+h2{font-size:30px;letter-spacing:-.04em;margin:0 0 8px}
+.section-desc{color:var(--muted);font-size:14px;margin:0}
+.controls{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+input,select{background:var(--surface);border:1px solid var(--edge);color:var(--text);padding:12px 14px;border-radius:12px}
+input{width:255px;max-width:100%}select{min-width:158px}
+.modules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:32px}
+.module-card{background:var(--surface);border:1px solid var(--edge);padding:23px;display:flex;flex-direction:column;gap:17px;border-radius:19px;transition:transform .2s,border .2s,box-shadow .2s}
+.module-card:hover{transform:translateY(-3px);border-color:#4b91c7;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.number{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.12em}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--edge);border-radius:999px;padding:5px 9px;white-space:nowrap}
+.module-card h3{margin:0;font-size:20px;line-height:1.3;letter-spacing:-.025em;min-height:52px}
+.module-card .meta{color:var(--muted);font-size:13px;display:flex;gap:16px;align-items:center;margin-top:auto}
+.progress{height:6px;border-radius:10px;background:var(--surface2);overflow:hidden}
+.progress span{height:100%;display:block;background:linear-gradient(90deg,#35a6fa,#55e6b9);border-radius:10px}
+.module-card .open{padding-top:8px;border-top:1px solid var(--edge);color:var(--accent);font-size:13px;font-weight:750;background:transparent;border-left:0;border-right:0;border-bottom:0;display:flex;justify-content:space-between;text-align:left}
+#detail{scroll-margin-top:100px;background:var(--surface);border:1px solid var(--edge);border-radius:22px;padding:27px;margin:10px 0 75px}
+.detail-title{display:flex;justify-content:space-between;gap:15px;align-items:start;margin-bottom:17px}
+#detail h3{font-size:24px;margin:4px 0}
+#detail p{color:var(--muted);margin:0}
+.lesson-list{display:grid;gap:10px;margin-top:20px}
+.lesson{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--edge);border-radius:12px;background:var(--surface2);padding:14px 16px;text-decoration:none}
+.lesson.ready:hover{border-color:var(--accent)}
+.lesson:not(.ready){opacity:.61}
+.lesson-name{font-size:14px;font-weight:650}
+.lesson-id{font-size:11px;color:var(--accent);font-weight:750;margin-right:10px}
+.state{font-size:12px;white-space:nowrap;color:var(--muted)}
+.ready .state{color:var(--accent2)}
+.foot{padding:32px 0;border-top:1px solid var(--edge);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:13px}
+.foot a{color:var(--accent)}
+.empty{grid-column:1/-1;padding:45px;border:1px dashed var(--edge);border-radius:17px;color:var(--muted);text-align:center}
+[hidden]{display:none!important}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.visual{max-width:650px}.modules{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.container{padding:0 17px}.topbar{min-height:69px}.brand span{font-size:13px}.brand small{font-size:9px}.actions .repo-btn{display:none}.hero{padding:45px 0 32px;gap:30px}h1{font-size:43px}.lead{font-size:15px}.visual{padding:17px}.node{font-size:10px;padding:12px 5px}.stats{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:47px}.stat{padding:17px}.stat strong{font-size:28px}.section-top{display:block}.controls{justify-content:stretch;margin-top:17px}.controls input{flex:1;width:100%}.controls select{flex:1}.modules{grid-template-columns:1fr}.module-card h3{min-height:auto}.detail-title{display:block}#detail{padding:20px}.lesson{align-items:flex-start}.lesson .state{font-size:11px}.foot{padding-bottom:60px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header><div class="container topbar">
+<a class="brand" href="index.html" aria-label="Elasticsearch Engineering Academy">
+<svg viewBox="0 0 42 42" fill="none" aria-hidden="true"><path d="M7 14L21 6L35 14V29L21 37L7 29Z" stroke="#64e1b4" stroke-width="3"/><path d="M7 14L21 23L35 14M21 23V37" stroke="#51b6ff" stroke-width="3"/></svg>
+<span>Elastic<span style="color:var(--accent)">Academy</span><small>Engineering Learning Portal</small></span></a>
+<div class="actions"><a class="btn repo-btn" href="https://github.com/Ruvim1100/ElasticSearch" target="_blank" rel="noopener">GitHub ↗</a><button class="btn" id="theme" aria-label="Переключить тему">☀︎ / ☾</button></div>
+</div></header>
+<main class="container">
+<section class="hero"><div><div class="eyebrow">Production-ready Elasticsearch Engineering</div>
+<h1>Изучай поиск.<br><span class="accent">Строй системы.</span></h1>
+<p class="lead">Интерактивная академия Elasticsearch: от внутреннего устройства индексов до поисковой платформы на ASP.NET Core, PostgreSQL и Next.js. Теория, диаграммы, живые примеры и практические задания в одном месте.</p>
+<div class="hero-buttons"><a class="btn primary" href="#catalog">Исследовать модули →</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1RAOCwPvpiUlYKvzrWvx7bxCZuvduTQ9TslzMvbG4WKM/edit" target="_blank" rel="noopener">Учебный прогресс ↗</a></div></div>
+<div class="visual" aria-label="Схема потока запроса"><div class="visual-label">Search request pipeline</div>
+<div class="pipeline">
+<div class="node"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9H21"/></svg>Next.js</div><span class="pipe-arrow">→</span>
+<div class="node"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 6L2 12L5 18M19 6L22 12L19 18M14 4L10 20"/></svg>ASP.NET</div><span class="pipe-arrow">→</span>
+<div class="node"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M7 10L12 5L17 10M7 14L12 19L17 14"/></svg>Elasticsearch</div>
+</div><div class="visual-bottom"><span><i class="live-dot"></i>Interactive learning</span><span>Search · Index · Analyze</span></div></div>
+</section>
+<section class="stats" aria-label="Статистика программы">
+<div class="stat"><strong id="stat-modules">19</strong><span>модулей в программе</span></div>
+<div class="stat"><strong id="stat-planned">137</strong><span>запланировано уроков</span></div>
+<div class="stat"><strong id="stat-published">3</strong><span>HTML-урока опубликовано</span></div>
+<div class="stat"><strong>100%</strong><span>упор на понимание и практику</span></div>
+</section>
+<section id="catalog">
+<div class="section-top"><div><h2>Каталог модулей</h2><p class="section-desc">Выбирай модуль и открывай опубликованные уроки. Будущие занятия появятся автоматически.</p></div>
+<div class="controls"><input id="search" type="search" placeholder="Поиск модулей и уроков..." aria-label="Поиск"><select id="filter" aria-label="Фильтр направления"><option value="all">Все направления</option><option value="Foundation">Foundation</option><option value="Core">Core</option><option value="Engineering">Engineering</option><option value="Advanced">Advanced</option><option value="Specialization">Specialization</option><option value="Capstone">Capstone</option></select></div></div>
+<div class="modules" id="modules" aria-live="polite"></div>
+<div id="detail" hidden><div class="detail-title"><div><span class="number" id="detail-id"></span><h3 id="detail-heading"></h3><p id="detail-description"></p></div><button class="btn" id="close-detail">Закрыть ✕</button></div><div class="lesson-list" id="lesson-list"></div></div>
+</section></main>
+<footer class="container foot"><span>Elasticsearch Engineering Academy · Source-controlled learning</span><span>Код: <a href="https://github.com/Ruvim1100/ElasticSearch">GitHub</a> · Результаты: <a href="https://docs.google.com/spreadsheets/d/1RAOCwPvpiUlYKvzrWvx7bxCZuvduTQ9TslzMvbG4WKM/edit">Google Sheets</a></span></footer>
+<script src="data/catalog.js"></script>
+<script>
+(function(){
+  'use strict';
+  const data=window.ACADEMY_CATALOG;
+  if(!data){ document.getElementById('modules').textContent='Каталог ещё не собран. Запустите npm run build.'; return; }
+  const $=id=>document.getElementById(id);
+  $('stat-modules').textContent=data.modules.length;
+  $('stat-planned').textContent=data.planned;
+  $('stat-published').textContent=data.modules.reduce((sum,m)=>sum+m.lessons.length,0);
+  const theme=localStorage.getItem('academy-theme');
+  if(theme==='light')document.body.classList.add('light');
+  $('theme').onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('academy-theme',document.body.classList.contains('light')?'light':'dark')};
+  function el(tag,className,text){const x=document.createElement(tag);if(className)x.className=className;if(text!==undefined)x.textContent=text;return x}
+  function render(){
+    const q=$('search').value.trim().toLowerCase(),track=$('filter').value,root=$('modules');root.replaceChildren();
+    const filtered=data.modules.filter(m=>(track==='all'||m.track===track)&&(!q||(m.id+' '+m.title+' '+m.lessons.map(x=>x.title+' '+(x.tags||[]).join(' ')).join(' ')).toLowerCase().includes(q)));
+    for(const m of filtered){
+      const c=el('article','module-card');c.tabIndex=0;
+      const head=el('div','card-head'),num=el('span','number',m.id),tag=el('span','tag',m.track);head.append(num,tag);c.append(head);
+      c.append(el('h3',null,m.title));
+      const meta=el('div','meta');meta.append(el('span',null,m.lessons.length+' / '+m.planned+' опубликовано'));c.append(meta);
+      const progress=el('div','progress'),bar=el('span');bar.style.width=(m.planned?100*m.lessons.length/m.planned:0)+'%';progress.append(bar);c.append(progress);
+      const button=el('button','open','Открыть уроки →');button.setAttribute('aria-label','Открыть модуль '+m.id);button.addEventListener('click',()=>showModule(m.id));c.append(button);
+      c.addEventListener('keydown',e=>{if(e.target===c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();showModule(m.id)}});
+      root.append(c);
+    }
+    if(!filtered.length)root.append(el('div','empty','Ничего не найдено — попробуйте изменить запрос или фильтр.'));
+  }
+  function showModule(id){
+    const m=data.modules.find(x=>x.id===id);if(!m)return;
+    $('detail-id').textContent=m.id+' · '+m.track;
+    $('detail-heading').textContent=m.title;
+    $('detail-description').textContent=m.lessons.length+' опубликовано из '+m.planned+' запланированных уроков';
+    const list=$('lesson-list');list.replaceChildren();
+    const plan=m.topics||[];
+    const planned=plan.length?plan:m.lessons.map(x=>({id:x.id,title:x.title}));
+    for(const p of planned){
+      const published=m.lessons.find(x=>x.id===p.id),row=el(published?'a':'div','lesson'+(published?' ready':''));
+      const left=el('div'),idElement=el('span','lesson-id',p.id),name=el('span','lesson-name',published?published.title:p.title),status=el('span','state',published?'Открыть ↗':'В разработке');
+      left.append(idElement,name);row.append(left,status);
+      if(published)row.href=published.href;list.append(row);
+    }
+    $('detail').hidden=false;
+    $('detail').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+  $('close-detail').addEventListener('click',()=>{$('detail').hidden=true;$('catalog').scrollIntoView({behavior:'smooth'})});
+  $('search').addEventListener('input',render);$('filter').addEventListener('change',render);
+  render();
+})();
+</script>
+</body></html>
