@@ -50,6 +50,24 @@
           ],
           "publishedAt": "2026-11-18",
           "href": "lessons/M00-L02/index.html"
+        },
+        {
+          "id": "M00-L03",
+          "moduleId": "M00",
+          "title": "Как читать Elastic Docs и проверять версию API",
+          "summary": "Интерактивный Docs Navigator, симулятор совместимости версий, анализатор JSON, самостоятельная практическая лабораторная и Knowledge Check по Elasticsearch 9.x.",
+          "durationMinutes": 120,
+          "kind": "Interactive lesson + lab",
+          "tags": [
+            "Elastic Docs",
+            "REST API",
+            "Versioning",
+            "Compatibility",
+            "C#",
+            "TypeScript"
+          ],
+          "publishedAt": "2026-11-18",
+          "href": "lessons/M00-L03/index.html"
         }
       ]
     },
