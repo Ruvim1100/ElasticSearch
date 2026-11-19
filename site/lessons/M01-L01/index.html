@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1b2d">
+<meta name="description" content="M01-L01 — интерактивная инженерная лаборатория: когда выбрать PostgreSQL, когда Elasticsearch и когда использовать оба. Для .NET и TypeScript.">
+<title>M01-L01 · PostgreSQL или Elasticsearch? · Engineering Academy</title>
+<link rel="icon" href="../../assets/icon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#071525;--paper:#11263b;--surface:#1a3449;--surface2:#214052;--ink:#f3faff;--muted:#b7cadb;--border:#3e6074;--blue:#8bd9fd;--teal:#7be6c9;--amber:#ffd19d;--rose:#ffb1b3;--good:#a7edd7;--soft:#123c49;--shadow:0 15px 37px #0002;--glassy:#071525ec;--bar:#24445a;font:16.5px/1.64 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+:root.light{color-scheme:light;--bg:#f3f8fc;--paper:#fff;--surface:#edf4f9;--surface2:#e1f1f2;--ink:#162f43;--muted:#476276;--border:#b2c8d5;--blue:#03658f;--teal:#00765e;--amber:#955e11;--rose:#ac373a;--good:#006f58;--soft:#e4f5f2;--shadow:0 14px 32px #0e3a5310;--glassy:#f9fcfeee;--bar:#d2e5ec}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:radial-gradient(circle at 85% 0,#198c9320,transparent 33%),var(--bg);color:var(--ink);overflow-x:hidden}a{color:var(--blue);text-underline-offset:4px}button,select,textarea,input{font:inherit;color:inherit}button,select,input[type=text],textarea{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px}button{cursor:pointer;font-weight:730;transition:border-color .16s,transform .16s}button:hover{border-color:var(--teal)}button:active{transform:scale(.99)}button.primary{background:linear-gradient(100deg,#88dcfb,#7cecc9);color:#062731;border:0;padding:12px 18px}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--teal);outline-offset:3px}button[aria-pressed=true]{border-color:var(--teal);background:var(--soft)}button:disabled{opacity:.45;cursor:not-allowed}textarea{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;min-height:150px;resize:vertical;line-height:1.58}
+.wrap{width:min(1140px,calc(100% - 36px));margin:auto}h1,h2,h3{line-height:1.19;letter-spacing:-.034em}h1{font-size:clamp(2.4rem,6vw,4.65rem);margin:15px 0 18px}h2{font-size:clamp(1.6rem,3.7vw,2.25rem);margin:8px 0 17px}h3{font-size:1.18rem;margin:8px 0 10px}p{max-width:77ch;margin:11px 0 17px}p:last-child{margin-bottom:0}small,.muted{color:var(--muted)}strong{font-weight:770}.eyebrow{color:var(--teal);font-weight:820;letter-spacing:.12em;text-transform:uppercase;font-size:.77rem}.skip{position:absolute;left:-9999px;top:8px;z-index:100}.skip:focus{left:8px;background:var(--paper);padding:12px}
+header{border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--glassy);backdrop-filter:blur(14px);z-index:40}.top{min-height:69px;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{display:flex;align-items:center;gap:10px;font-weight:830;letter-spacing:-.025em;color:var(--ink);text-decoration:none}.brand img{width:29px;height:29px}.badge{font-size:.81rem;border:1px solid var(--border);color:var(--teal);border-radius:100px;padding:5px 11px;font-weight:760}
+.hero{margin:27px 0 14px;position:relative;overflow:hidden;border:1px solid var(--border);border-radius:25px;background:linear-gradient(135deg,var(--paper),var(--surface));padding:clamp(26px,5vw,55px);box-shadow:var(--shadow)}.hero:before{content:"";position:absolute;right:-155px;top:-120px;width:480px;height:480px;background:radial-gradient(circle,#28cbb927,transparent 66%);pointer-events:none}.hero-inner{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}.hero h1 em{font-style:normal;color:var(--teal)}.lead{font-size:1.15rem;color:var(--muted)}.chips,.menu,.actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.chips span{font-size:.8rem;border:1px solid var(--border);padding:5px 11px;border-radius:99px;color:var(--muted)}.jump{display:inline-flex;padding:11px 17px;margin:11px 0 21px;text-decoration:none;font-weight:790;border-radius:12px;background:var(--teal);color:var(--bg)}.diagramhero{padding:18px;background:#0a2435;border:1px solid #427084;border-radius:18px;color:#ecfaff;box-shadow:0 16px 34px #0002}.dh-head{display:flex;align-items:center;gap:7px;padding-bottom:12px;font-size:.77rem;color:#b2d4e0}.dot{width:8px;height:8px;border-radius:50%;background:#df8684}.dot:nth-child(2){background:#d8c577}.dot:nth-child(3){background:#6fc6a6}.dh-box{border:1px solid #315e72;background:#112f43;border-radius:11px;padding:10px;margin:8px 0;display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.88rem}.dh-box b{color:#89e8ca}.dh-flow{text-align:center;color:#83dacc;font-weight:800;letter-spacing:.08em;font-size:.81rem;padding:4px}.dh-bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dh-bottom .dh-box{display:block;text-align:center}.dh-bottom small{display:block;color:#b4d0db}.menu{padding:14px 0}.menu a{font-size:.83rem;font-weight:730;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--border);border-radius:9px;padding:8px 11px}.menu a:hover{border-color:var(--teal)}
+section{border:1px solid var(--border);background:var(--paper);border-radius:20px;margin:20px 0;padding:clamp(21px,3.8vw,39px);box-shadow:var(--shadow)}.sec-head{display:flex;align-items:center;gap:16px;margin:0 0 14px}.num{display:grid;place-items:center;flex-shrink:0;width:44px;height:44px;border:1px solid var(--border);border-radius:13px;background:var(--soft);font-weight:850;color:var(--teal)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:20px;min-width:0}.card p{color:var(--muted);font-size:.94rem}.card p strong{color:var(--ink)}.card .titleline{color:var(--teal);font-weight:840;font-size:.73rem;letter-spacing:.12em;text-transform:uppercase}.callout{border-left:4px solid var(--teal);background:var(--soft);padding:17px 19px;border-radius:11px;margin:18px 0}.callout.warning{border-left-color:var(--amber)}.callout p{margin:0}.flow{display:flex;gap:8px;align-items:stretch;margin:19px 0}.flowbox{flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:13px;text-align:center;padding:16px 12px}.flowbox strong,.flowbox small{display:block}.flowbox span.icon{font-size:1.35rem}.arrow{display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:1.4rem;font-weight:850}
+.interactive{background:linear-gradient(135deg,var(--surface),var(--paper));padding:clamp(17px,3vw,27px);border:1px solid var(--border);border-radius:17px;margin:18px 0}.itop{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:13px}.itop h3{margin:0}.label{font-size:.8rem;color:var(--teal);letter-spacing:.08em;font-weight:770;text-transform:uppercase}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}.field{display:flex;flex-direction:column;min-width:0;gap:7px;font-weight:730}.field select,.field textarea,.field input{width:100%;min-width:0}.field small{font-weight:400}.output{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;min-height:55px}.output.good{border-color:var(--teal)}.output.warn{border-color:var(--amber)}.output.bad{border-color:var(--rose)}.output h4{margin:0 0 7px;font-size:1.01rem}.output p{margin:6px 0}.sline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border-bottom:1px solid var(--border);padding:10px 0}.sline:last-child{border:0}.sline strong{color:var(--teal)}.pill{border:1px solid var(--border);padding:3px 9px;border-radius:8px;font-size:.82rem;font-weight:750}.pill.ok{color:var(--teal)}.pill.warn{color:var(--amber)}
+pre{overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;line-height:1.65;font-size:.84rem}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{font-size:.9em;background:var(--surface);padding:2px 5px;border-radius:5px}pre code{background:transparent;padding:0;font-size:1em}.tabrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabrow button{font-size:.89rem}.result-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--paper);display:flex;align-items:center;gap:11px}.product .avatar{display:grid;place-items:center;background:var(--soft);border-radius:11px;font-size:1.3rem;width:44px;height:44px;flex-shrink:0}.product b,.product small{display:block}.product small{font-size:.8rem}.product .meta{min-width:0}.product .meta b{overflow-wrap:anywhere}.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:16px 0}.stage{border:1px solid var(--border);border-radius:12px;background:var(--paper);padding:13px 8px;text-align:center;min-width:0}.stage small,.stage strong{display:block}.stage small{font-size:.72rem}.stage strong{font-size:1.2rem;margin:8px 0;overflow-wrap:anywhere}.stage.selected{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}.stage.stale{border-color:var(--amber)}.statusbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;justify-content:space-between}.progress{height:8px;background:var(--bar);border-radius:99px;overflow:hidden;flex:1;min-width:110px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width .2s}.steps{padding-left:27px}.steps li{padding-left:6px;margin:9px 0}.steps li::marker{color:var(--teal);font-weight:850}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:520px}th,td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{color:var(--teal);font-size:.89rem}details{border:1px solid var(--border);background:var(--surface);padding:12px 17px;border-radius:12px;margin:10px 0}summary{cursor:pointer;font-weight:770}details p{font-size:.95rem}.qcard{padding:19px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin:13px 0}.qcard label{display:block;margin-bottom:10px;font-weight:730}.qcard textarea{min-height:152px}footer{padding:25px 0 63px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:850px){.hero-inner,.grid,.grid.two,.formgrid{grid-template-columns:1fr}.result-list{grid-template-columns:1fr}.diagramhero{max-width:560px}.flow{flex-direction:column}.arrow:after{content:"↓"}.arrow span{display:none}.stages{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.wrap{width:calc(100% - 24px)}.hero{padding:23px;margin-top:15px}.brand{font-size:.83rem}.brand img{width:24px;height:24px}.top button{font-size:.83rem}.stage{padding:11px 6px}.stage strong{font-size:1rem}.menu a{font-size:.79rem;padding:7px 9px}.qcard{padding:15px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button,.progress span{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к уроку</a>
+<header><nav class="wrap top" aria-label="Навигация Academy"><a class="brand" href="../../index.html"><img src="../../assets/icon.svg" alt="">Elasticsearch Engineering Academy</a><button type="button" id="theme" aria-label="Переключить тёмную и светлую тему">Светлая тема</button></nav></header>
+<main class="wrap" id="main">
+<div class="hero"><div class="hero-inner">
+<div><span class="eyebrow">M01 · Ментальная модель · Урок 01</span>
+<h1>PostgreSQL или<br><em>Elasticsearch?</em></h1>
+<p class="lead">Разберём, какую задачу решает каждая система, почему они могут работать вместе и как не допустить ошибку, когда поиск показывает устаревшие данные.</p>
+<a class="jump" href="#worked">Начать с простого примера →</a>
+<div class="chips"><span>2–2,5 часа</span><span>4 интерактивных инструмента</span><span>ASP.NET Core / Next.js</span><span>Elasticsearch 9.x</span></div></div>
+<div class="diagramhero" aria-label="Архитектурная схема: приложение общается с API, PostgreSQL хранит транзакционные данные, Elasticsearch используется для поиска">
+<div class="dh-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px">architecture / AcademyShop</span></div>
+<div class="dh-box"><span>🖥 Next.js / браузер</span><b>UI</b></div>
+<div class="dh-flow">↓ HTTP + JSON</div>
+<div class="dh-box"><span>⚙ ASP.NET Core API</span><b>Business rules</b></div>
+<div class="dh-flow">↙ запросы · обработка событий ↘</div>
+<div class="dh-bottom"><div class="dh-box">🗄 PostgreSQL<small>заказы · цены · остатки</small></div><div class="dh-box">🔎 Elasticsearch<small>поисковые документы</small></div></div>
+<div style="font-size:.75rem;color:#bad5e0;padding-top:12px">Поток синхронизации между системами рассматриваем отдельно.</div>
+</div></div></div>
+<nav class="menu" aria-label="Разделы урока"><a href="#why">Зачем</a><a href="#mental">Модель</a><a href="#worked">Первый пример</a><a href="#router">Выбор системы</a><a href="#search-demo">Поиск</a><a href="#sync">Синхронизация</a><a href="#deep">Теория</a><a href="#lab">Лабораторная</a><a href="#quiz">Проверка</a><a href="#refs">Источники</a></nav>
+<section id="why"><div class="sec-head"><span class="num">01</span><div><span class="eyebrow">Why it matters · Практическая ценность</span><h2>Две системы — два типа задач</h2></div></div>
+<p>Допустим, в магазине есть 100 000 товаров. Клиент хочет быстро находить товары по словам, фильтровать по брендам и сортировать по релевантности. В это же время другой клиент покупает последний товар на складе. Эти операции имеют разные требования к данным.</p>
+<div class="grid">
+<div class="card"><span class="titleline">PostgreSQL</span><h3>Не продать дважды</h3><p>Реляционная база данных (relational database): таблицы, связи, ограничения, транзакции. Хорошо подходит для заказов, платежей, остатка и целостности.</p></div>
+<div class="card"><span class="titleline">Elasticsearch</span><h3>Быстро и релевантно искать</h3><p>Поисковый и аналитический движок (search and analytics engine): анализ текста, релевантность, фильтры и агрегирование результатов.</p></div>
+<div class="card"><span class="titleline">Вместе</span><h3>Каждый на своём месте</h3><p>PostgreSQL может оставаться источником истины, а Elasticsearch — отдельной поисковой проекцией. За синхронизацию отвечает интеграция.</p></div></div>
+<div class="callout"><p><strong>После урока ты сможешь:</strong> объяснить trade-offs (компромиссы), выбрать PostgreSQL, Elasticsearch или оба под задачу, описать источник истины и придумать безопасный тест при устаревшей поисковой выдаче.</p></div>
+<p><strong>Prerequisites:</strong> M00 завершён; ты знаешь HTTP, JSON и базовые SQL-запросы. Устанавливать серверы сегодня не нужно.</p>
+</section>
+<section id="mental"><div class="sec-head"><span class="num">02</span><div><span class="eyebrow">Mental model · Простое объяснение</span><h2>Бухгалтерская книга и библиотечный каталог</h2></div></div>
+<p>PostgreSQL можно представить как <strong>строгий реестр</strong>: сколько товаров осталось, кто оплатил заказ, что изменилось одной транзакцией. Elasticsearch — как <strong>поисковый каталог</strong>: по каким словам и признакам искать записи и как упорядочить подходящие результаты.</p>
+<div class="flow" role="img" aria-label="ASP.NET Core записывает транзакцию в PostgreSQL, затем worker переносит поисковую проекцию в Elasticsearch, а пользователь ищет по ней">
+<div class="flowbox"><span class="icon">🧾</span><strong>Заказ и остаток</strong><small>Бизнес-операция</small></div><div class="arrow"><span>→</span></div>
+<div class="flowbox"><span class="icon">🗄</span><strong>PostgreSQL</strong><small>Transaction / источник истины</small></div><div class="arrow"><span>→</span></div>
+<div class="flowbox"><span class="icon">⚙</span><strong>Worker</strong><small>Передаёт изменение</small></div><div class="arrow"><span>→</span></div>
+<div class="flowbox"><span class="icon">🔎</span><strong>Elasticsearch</strong><small>Search projection</small></div>
+</div>
+<div class="grid two">
+<div class="card"><h3>Транзакция (transaction)</h3><p>Группа изменений, которая фиксируется вместе или не фиксируется вовсе. Пример: заказ создан, остаток уменьшен, платёж зарегистрирован согласованно по правилам приложения.</p></div>
+<div class="card"><h3>Поисковая проекция (search projection)</h3><p>Отдельные документы, подготовленные для поиска. В них часто копируются название, описание и доступность товара. Это не обязательно «основная база данных».</p></div></div>
+<div class="callout warning"><p><strong>Но это не абсолютный закон.</strong> PostgreSQL тоже умеет полнотекстовый поиск с индексами GIN. Elasticsearch тоже умеет хранить документы и выполнять фильтры/аналитику. Выбор зависит от задач, стоимости, требований к согласованности и возможностей команды, а не от названия продукта.</p></div>
+<details><summary>Почему мы пока не изучаем shards, inverted index и analyzer глубоко?</summary><p>Сначала учимся выбирать систему по требованиям. Устройство индексов, токенизацию, шарды и Lucene мы подробно разберём в следующих уроках M01. Сейчас достаточно понимать <strong>что мы хотим получить</strong> и <strong>какой источник данных этому подходит</strong>.</p></details>
+</section>
+<section id="worked"><div class="sec-head"><span class="num">03</span><div><span class="eyebrow">Guided example · Полностью разобранный</span><h2>Пример: покупаем последний телефон</h2></div></div>
+<p>В магазине остался один телефон. Два клиента одновременно нажали «Купить». <strong>Требование:</strong> нельзя принять два успешных заказа на один оставшийся товар.</p>
+<div class="grid two">
+<div class="card"><span class="titleline">Input → Expected</span><pre><code>Товар P-42
+Stock = 1
+
+Client A: BUY 1
+Client B: BUY 1
+
+Expected:
+Ровно одна покупка успешна,
+остаток становится 0.</code></pre></div>
+<div class="card"><span class="titleline">Actual → Interpretation</span><pre><code>Учебный пример с проверкой
+остатка в транзакции:
+
+A: резерв 1 → SUCCESS
+B: резерв 1 → REJECTED
+Stock = 0</code></pre><p>Покупка должна опираться на <strong>актуальное состояние транзакционной базы</strong>, а не на документ поискового индекса, который может отставать.</p></div></div>
+<div class="callout"><p><strong>Вывод:</strong> PostgreSQL — разумный выбор для проверки и изменения остатка. Elasticsearch может помогать найти телефон, но не должен быть единственным механизмом, решающим, можно ли завершить покупку в этой архитектуре.</p></div>
+<h3>Минимальный SQL-пример (не лабораторное решение)</h3>
+<pre><code>-- Атомарное условное уменьшение остатка
+UPDATE products
+SET stock = stock - 1
+WHERE id = 42 AND stock &gt; 0
+RETURNING stock;
+
+-- 1 возвращённая строка → резерв возможен.
+-- 0 строк → товара больше нет.
+-- В приложении операция должна быть частью
+-- корректно спроектированной транзакции.</code></pre>
+<p>PostgreSQL обеспечивает атомарность самого условного изменения; бизнес-транзакция может включать дополнительные действия. В реальном проекте понадобятся ограничения, обработка ошибок и проверки конкурентных запросов.</p>
+</section>
+<section id="router"><div class="sec-head"><span class="num">04</span><div><span class="eyebrow">Interactive 01 · Decision Trainer</span><h2>Куда направить задачу?</h2></div></div>
+<p>Выбери учебный запрос, затем сначала предположи архитектуру. Получишь объяснение, <strong>почему</strong> такой выбор подходит. Это тренировка без оценки, не готовое решение независимой лабораторной.</p>
+<div class="interactive">
+<div class="itop"><h3>Интерактивный распределитель запросов</h3><span class="badge">Не оценивается</span></div>
+<div class="field"><label for="route-task">Задача пользователя</label><select id="route-task"><option value="purchase">Купить последний товар</option><option value="lookup">Получить заказ по точному ID</option><option value="catalog">Поиск «беспроводные наушники» с релевантностью</option><option value="filter">Отфильтровать 200 товаров по цене и категории</option><option value="combo">Искать товары и затем оформить заказ</option></select></div>
+<div class="formgrid">
+<label class="field">Какую систему выбрал бы ты?<select id="route-choice"><option value="">Выбери вариант</option><option value="pg">PostgreSQL</option><option value="es">Elasticsearch</option><option value="both">Обе системы</option></select></label>
+<div class="field"><span>Сравнить рассуждения</span><button class="primary" id="route-check" type="button">Проверить мой выбор</button></div></div>
+<div class="output" id="route-output" aria-live="polite">Сначала выбери гипотезу, затем нажми кнопку. Нет наказания за ошибку.</div>
+</div>
+</section>
+<section id="search-demo"><div class="sec-head"><span class="num">05</span><div><span class="eyebrow">Interactive 02 · Search Playground</span><h2>Чем отличаются «точно найти» и «найти по смыслу текста»?</h2></div></div>
+<p>В игрушечном каталоге есть пять товаров. Сравним строгую проверку вхождения <strong>целой строки</strong> и простой учебный поиск по <strong>отдельным словам</strong> с подсчётом совпадений. Это упрощённая модель, а не точная реализация PostgreSQL или алгоритма BM25 в Elasticsearch.</p>
+<div class="interactive">
+<div class="itop"><h3>Поиск по каталогу · 5 документов</h3><span class="badge">Локальный JavaScript</span></div>
+<div class="formgrid">
+<label class="field">Поисковый запрос<select id="search-query"><option value="красные кроссовки">красные кроссовки</option><option value="кроссовки">кроссовки</option><option value="чай">чай</option><option value="красные наушники">красные наушники</option><option value="несуществующий товар">несуществующий товар</option></select></label>
+<label class="field">Модель сравнения<select id="search-mode"><option value="exact">Строка целиком (строгая проверка)</option><option value="tokens">Слова по отдельности + учебный score</option></select></label></div>
+<div class="actions"><button class="primary" id="search-run" type="button">Искать</button><button type="button" id="search-reset">Сбросить</button></div>
+<div class="output" id="search-explain" aria-live="polite">Начни с «красные кроссовки», затем переключи режим. Что изменится?</div>
+<div class="result-list" id="search-results" aria-label="Найденные товары"></div>
+</div>
+<div class="callout warning"><p><strong>Не сделай ложный вывод:</strong> PostgreSQL тоже умеет настоящий full-text search через <code>tsvector</code>/<code>tsquery</code> и GIN. Выбираем отдельный Elasticsearch, когда преимущества качества поиска, масштаба, сложных запросов или аналитики действительно оправдывают дополнительную систему и синхронизацию. Ранжирование здесь только учебное, не Elasticsearch scoring.</p></div>
+<details><summary>Где настоящие Elasticsearch analyzer и inverted index?</summary><p>Когда создаётся полнотекстовый индекс, текст может разбиваться на токены (tokens) и нормализоваться (text analysis). Внутри используется inverted index (обратный индекс). Эти механизмы будем изучать и визуализировать отдельно в M01-L03 и следующих уроках. Тут мы сравниваем требования к поиску, а не имитируем внутренности Lucene.</p></details>
+</section>
+<section id="sync"><div class="sec-head"><span class="num">06</span><div><span class="eyebrow">Interactive 03 · Data flow</span><h2>Почему поиск может показывать вчерашний остаток?</h2></div></div>
+<p>В нашем магазине количество товара <strong>P-42</strong> было 3. Ты моделируешь продажу одной штуки: PostgreSQL станет показывать 2, но Elasticsearch не получит обновление автоматически без настроенной синхронизации. Нажми кнопки по очереди и изучи разницу.</p>
+<div class="interactive">
+<div class="itop"><h3>Путь изменения между системами</h3><span class="badge">Синтетические данные · без реального API</span></div>
+<div class="stages" aria-label="Стадии обновления данных">
+<div class="stage selected" id="sync-pg-box"><small>Source of truth</small><strong id="sync-pg">3</strong><small>PostgreSQL stock</small></div>
+<div class="stage" id="sync-queue-box"><small>Delivery</small><strong id="sync-queue">—</strong><small>Worker event</small></div>
+<div class="stage" id="sync-es-box"><small>Search index</small><strong id="sync-es">3</strong><small>Index stock</small></div>
+<div class="stage" id="sync-ui-box"><small>Catalog UI</small><strong id="sync-ui">3</strong><small>Search result stock</small></div>
+</div>
+<div class="actions"><button class="primary" id="sync-sell" type="button">1. Продать 1 в PostgreSQL</button><button id="sync-deliver" type="button">2. Доставить событие</button><button id="sync-refresh" type="button">3. Обновить видимость поиска</button><button id="sync-reset" type="button">Сбросить</button></div>
+<div class="output" id="sync-output" aria-live="polite">Начальное состояние: 3 товара в каждой системе. Сначала выполни продажу.</div>
+<div class="callout warning"><p><strong>Где проверять покупку?</strong> У транзакционного источника истины (PostgreSQL), а не по количеству из поисковой выдачи. Этот симулятор намеренно разделяет доставку события и поисковую видимость, чтобы показать две причины задержки. Реальные механизмы сложнее.</p></div>
+</div>
+</section>
+<section id="deep"><div class="sec-head"><span class="num">07</span><div><span class="eyebrow">Technical Deep Dive · Production trade-offs</span><h2>Четыре вопроса перед архитектурным решением</h2></div></div>
+<div class="grid two">
+<div class="card"><span class="titleline">01 · Correctness</span><h3>Нужна строгая согласованность?</h3><p>Заказы, платежи и ограниченный остаток требуют корректных транзакций и ограничений. Не принимай критичные решения по устаревающей поисковой проекции.</p></div>
+<div class="card"><span class="titleline">02 · Search quality</span><h3>Что должен уметь поиск?</h3><p>Точный ID, простой фильтр, full-text, морфология, опечатки, релевантность, гибридный и векторный поиск — разные требования. Начни с конкретных примеров запросов.</p></div>
+<div class="card"><span class="titleline">03 · Cost</span><h3>Оправдана ли новая система?</h3><p>Две технологии = инфраструктура, мониторинг, права, синхронизация, диагностика и тесты. Для небольшого каталога возможностей PostgreSQL часто достаточно.</p></div>
+<div class="card"><span class="titleline">04 · Failure</span><h3>Что делать при сбое поиска?</h3><p>Предусмотри задержку и недоступность поискового кластера: stale data, graceful degradation (упрощённый режим) и безопасную проверку перед покупкой.</p></div></div>
+<h3>Концептуальные примеры для .NET и TypeScript</h3>
+<div class="grid two">
+<div class="card"><span class="titleline">C# / PostgreSQL</span><pre><code>// Читаем источник истины
+var product = await db.Products
+    .SingleAsync(p => p.Id == id, ct);
+
+// Резервирование требует отдельной
+// корректной транзакционной операции.
+// Нельзя уменьшать остаток по данным
+// из поискового ответа.</code></pre><p>Иллюстрация на уровне EF Core; настройки контекста и обработка ошибок здесь опущены.</p></div>
+<div class="card"><span class="titleline">REST / Elasticsearch 9.x</span><pre><code>GET /products/_search
+{
+  "query": {
+    "match": {
+      "title": "беспроводные наушники"
+    }
+  }
+}</code></pre><p>Этот запрос возвращает подходящие документы согласно mapping/analyzer. Он не обеспечивает атомарное списание остатков.</p></div></div>
+<div class="grid two">
+<div class="card"><span class="titleline">C# · Elastic.Clients.Elasticsearch</span><pre><code>// Сервисный слой (эскиз API клиента)
+var response = await elastic.SearchAsync&lt;Product&gt;(
+    s => s.Indices("products")
+      .Query(q => q.Match(m => m
+        .Field(p => p.Title).Query(term))),
+    ct);
+
+// Проверяй успех ответа и ошибки.
+// Версию SDK сверяй с документацией.</code></pre></div>
+<div class="card"><span class="titleline">TypeScript / Next.js</span><pre><code>// Frontend обращается к своему API
+const response = await fetch(
+  "/api/catalog/search?q=" +
+    encodeURIComponent(query)
+);
+if (!response.ok) throw new Error("Search failed");
+const products = await response.json();
+
+// Ключи Elasticsearch — только
+// в безопасной серверной части.</code></pre></div></div>
+<details><summary>Может ли PostgreSQL быть единственной системой даже для поиска?</summary><p>Да. PostgreSQL поддерживает B-tree/GIN индексы, FTS, <code>tsvector</code>, ранжирование и фильтрацию. Для умеренных требований одного хранилища бывает достаточно, и его проще поддерживать. Нужны замеры на реальных запросах и данных — нет универсального порога по количеству товаров.</p></details>
+<details><summary>Может ли Elasticsearch быть основным хранилищем?</summary><p>В некоторых поисковых и аналитических решениях — да. Но это не значит, что он является взаимозаменяемой заменой реляционной OLTP-базы для многотабличных бизнес-транзакций. Тип консистентности, возможность восстановления и модель обновлений должны быть спроектированы под конкретный продукт.</p></details>
+<details><summary>Как технически обновлять Elasticsearch из PostgreSQL?</summary><p>Варианты включают worker, change data capture (CDC) и transactional outbox (событие, сохраняемое вместе с бизнес-изменением). При этом нужно продумать повторы сообщений, порядок обновлений, ошибки, удаление документов и восстановление после отставания. В M01-L01 это архитектурная схема; реализация — позднее.</p></details>
+<details><summary>Чем search index отличается от SQL index?</summary><p>Термин «индекс» используется в обеих системах, но обозначает разные сущности в контексте. В Elasticsearch index — логическая коллекция документов, которая использует внутренние поисковые структуры; в PostgreSQL индекс — дополнительная структура ускорения доступа к данным таблицы. Разберём это подробно в M01-L02 и M01-L03.</p></details>
+</section>
+<section id="lab"><div class="sec-head"><span class="num">08</span><div><span class="eyebrow">Independent lab · Официальная практика</span><h2>Архитектурная лабораторная: TicketFlow</h2></div></div>
+<div class="callout warning"><p><strong>Отсюда начинается оцениваемая работа.</strong> Первые семь разделов — обучение и тренировка без оценок. Теперь реши новую задачу самостоятельно: готовой архитектуры не показываем до Code Review.</p></div>
+<div class="card">
+<span class="titleline">Сценарий · 100% вымышленные данные</span><h3>TicketFlow — поиск мероприятий и бронирование</h3>
+<p>Сервис на ASP.NET Core и Next.js продаёт билеты. В PostgreSQL уже хранятся мероприятия, билеты и заказы. Команда рассматривает Elasticsearch 9.x, но дополнительная инфраструктура увеличит расходы.</p>
+<div class="tablewrap"><table><thead><tr><th>ID</th><th>Мероприятие</th><th>Место</th><th>Осталось</th></tr></thead><tbody>
+<tr><td>E-101</td><td>Джазовый вечер</td><td>Кишинёв</td><td>1</td></tr>
+<tr><td>E-102</td><td>Концерт камерной музыки</td><td>Бельцы</td><td>70</td></tr>
+<tr><td>E-103</td><td>Мастер-класс по фотографии</td><td>Комрат</td><td>12</td></tr>
+<tr><td>E-104</td><td>Лекция о программировании</td><td>Кишинёв</td><td>0</td></tr>
+</tbody></table></div>
+<p><strong>Требования бизнеса:</strong> посетитель ищет мероприятия по фразам и темам; нужны фильтры по городу и дате; администратор смотрит статистику; последние билеты нельзя продать дважды; некоторые события обновляются с задержкой.</p>
+</div>
+<div class="grid two" style="margin-top:14px">
+<div class="card"><span class="titleline">A · Design</span><h3>Выбор технологий</h3><p>Для 4 операций объясни PostgreSQL, Elasticsearch или обе: бронирование последнего билета; фильтр по городу; текстовый поиск; отчёт продаж. Укажи, когда достаточно только PostgreSQL.</p></div>
+<div class="card"><span class="titleline">B · Architecture</span><h3>Источник истины</h3><p>Нарисуй словами путь «пользователь → API → данные → ответ» для поиска и покупки. Назови <strong>source of truth</strong> и допустимую роль поисковой проекции.</p></div>
+<div class="card"><span class="titleline">C · Failure scenario</span><h3>Последний билет и старый поиск</h3><p>Поиск показывает, что доступен 1 билет E-101, но PostgreSQL уже показывает 0. Предложи безопасное поведение API и два проверяемых тестовых случая, в том числе конкурентную покупку.</p></div>
+<div class="card"><span class="titleline">D · Trade-offs &amp; Evidence</span><h3>Обоснуй расходы</h3><p>Назови 2 причины не вводить Elasticsearch сразу, 2 условия, когда его стоит добавить, какие метрики измерять и какое Evidence передать команде.</p></div></div>
+<h3>Критерии практики (100 баллов)</h3>
+<div class="tablewrap"><table><thead><tr><th>Критерий</th><th>Баллы</th><th>Что проверю</th></tr></thead><tbody>
+<tr><td>A · Выбор технологии</td><td>25</td><td>Все 4 операции, аргументы, альтернативы</td></tr>
+<tr><td>B · Архитектура и роли</td><td>25</td><td>Точность потока данных, source of truth, API boundaries</td></tr>
+<tr><td>C · Consistency + tests</td><td>30</td><td>Безопасная покупка, минимум 2 кейса, Expected/Actual и конкуренция</td></tr>
+<tr><td>D · Trade-offs + evidence</td><td>20</td><td>Стоимость, критерии внедрения, воспроизводимые доказательства</td></tr>
+</tbody></table></div>
+<div class="callout"><p><strong>Сдача:</strong> самостоятельное объяснение, теория ≥80/100 и практика ≥90/100. Проверка начинается только после явной отправки. Не нужны Docker и настоящий кластер; выбираем архитектуру по требованиям.</p></div>
+<h3>Рабочая тетрадь</h3>
+<div class="formgrid">
+<label class="field">A · Выбор и аргументы<textarea id="lab-a" placeholder="Разбери четыре операции. Почему этот вариант? Когда бы изменил решение?"></textarea></label>
+<label class="field">B · Архитектура двух потоков<textarea id="lab-b" placeholder="Поток поиска → ...&#10;Поток бронирования → ...&#10;Источник истины → ..."></textarea></label>
+<label class="field">C · Конкурентная покупка и устаревший поиск<textarea id="lab-c" placeholder="Безопасное поведение API, условия, два теста, Expected/Actual..."></textarea></label>
+<label class="field">D · Trade-offs и evidence<textarea id="lab-d" placeholder="Когда не нужен ES? Когда нужен? Какие метрики, данные, версии и журналы?"></textarea></label></div>
+</section>
+<section id="quiz"><div class="sec-head"><span class="num">09</span><div><span class="eyebrow">Knowledge Check · Теория</span><h2>Пять вопросов на понимание</h2></div></div>
+<p>Ответь своими словами, не переписывая фразы из карточек. Вопросы не требуют заучивания Query DSL — важно инженерное понимание причин и последствий.</p>
+<div class="qcard"><label for="q1">K1 · В каких случаях PostgreSQL лучше подходит как основное хранилище данных? Объясни на примере.</label><textarea id="q1" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q2">K2 · PostgreSQL тоже умеет полнотекстовый поиск. Почему и когда всё же имеет смысл добавить Elasticsearch?</label><textarea id="q2" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q3">K3 · Что означает «источник истины» (source of truth) и «поисковая проекция»? Почему это не одно и то же?</label><textarea id="q3" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q4">K4 · Поиск показывает старый остаток, а PostgreSQL — новый. От чего зависит корректность покупки и какие две причины задержки ты проверишь?</label><textarea id="q4" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q5">K5 · Объясни trade-off: почему ещё одна поисковая система может улучшить продукт, но усложнить его поддержку?</label><textarea id="q5" placeholder="Твой ответ..."></textarea></div>
+<div class="interactive">
+<div class="itop"><h3>Подготовка отчёта для Code Review</h3><span class="badge">Никакой автоматической оценки</span></div>
+<div class="statusbar"><strong id="report-count">0 из 9</strong><div class="progress" aria-hidden="true"><span id="report-bar"></span></div></div>
+<div class="actions" style="margin-top:14px"><button class="primary" id="report-build" type="button">Сформировать отчёт</button><button id="report-copy" type="button">Скопировать отчёт</button></div>
+<label class="field" for="report" style="margin-top:16px">Текст работы<textarea readonly id="report" placeholder="Здесь появятся ответы после нажатия кнопки."></textarea><small>Браузер не отправляет ответы в ChatGPT или Google Sheets. Ты должен скопировать текст и отправить его на проверку самостоятельно.</small></label>
+<div class="output" id="report-feedback" role="status" aria-live="polite">После завершения лабораторной сформируй отчёт и отправь его наставнику.</div>
+</div>
+</section>
+<section id="refs"><div class="sec-head"><span class="num">10</span><div><span class="eyebrow">Official References · Проверено 19.11.2026</span><h2>Где проверить архитектурные утверждения</h2></div></div>
+<div class="grid two">
+<div class="card"><span class="titleline">Elasticsearch 9.x</span><h3>Search approaches</h3><p>Поиск по словам, семантике, комбинированные подходы и фильтры.</p><a href="https://www.elastic.co/docs/solutions/search/search-approaches" target="_blank" rel="noopener noreferrer">Официальные подходы ↗</a></div>
+<div class="card"><span class="titleline">Elasticsearch 9.x</span><h3>Full-text search</h3><p>Текстовый поиск, анализаторы и релевантность.</p><a href="https://www.elastic.co/docs/solutions/search/full-text" target="_blank" rel="noopener noreferrer">Elasticsearch Full-text ↗</a></div>
+<div class="card"><span class="titleline">PostgreSQL · Current</span><h3>PostgreSQL Full-text</h3><p>Как поисковые запросы и индексы работают в реляционной базе.</p><a href="https://www.postgresql.org/docs/current/textsearch-intro.html" target="_blank" rel="noopener noreferrer">PostgreSQL FTS ↗</a></div>
+<div class="card"><span class="titleline">PostgreSQL · Current</span><h3>Transactions</h3><p>Корректность изменений и транзакций.</p><a href="https://www.postgresql.org/docs/current/tutorial-transactions.html" target="_blank" rel="noopener noreferrer">Транзакции ↗</a></div>
+<div class="card"><span class="titleline">Elasticsearch 9.x</span><h3>Near real-time search</h3><p>Почему поисковая выдача может отставать от записанных данных.</p><a href="https://www.elastic.co/docs/manage-data/data-store/near-real-time-search" target="_blank" rel="noopener noreferrer">Near-real-time ↗</a></div>
+<div class="card"><span class="titleline">.NET Client</span><h3>Official .NET SDK</h3><p>Проверяй версии и реальные методы Elastic.Clients.Elasticsearch.</p><a href="https://www.elastic.co/docs/reference/elasticsearch/clients/dotnet" target="_blank" rel="noopener noreferrer">.NET Client Docs ↗</a></div>
+</div>
+<div class="callout"><p><strong>После этого урока:</strong> ты должен аргументировать, <em>почему</em> система выбрана, а не просто называть её. Только после самостоятельной сдачи и Code Review мы сможем открыть M01-L02 — документы, индексы, поля, <code>_id</code> и <code>_source</code>.</p></div>
+</section>
+</main>
+<footer class="wrap"><a href="../../index.html">← Academy Dashboard</a><a href="https://github.com/Ruvim1100/ElasticSearch">GitHub с материалами</a><a href="#main">↑ В начало урока</a></footer>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+function setTheme(light){document.documentElement.classList.toggle("light",light);el("theme").textContent=light?"Тёмная тема":"Светлая тема";}
+let theme=null;try{theme=localStorage.getItem("academy-theme");}catch(err){}
+setTheme(theme===null?window.matchMedia("(prefers-color-scheme: light)").matches:theme==="light");
+el("theme").addEventListener("click",()=>{const light=!document.documentElement.classList.contains("light");setTheme(light);try{localStorage.setItem("academy-theme",light?"light":"dark");}catch(err){};});
+const decisions={
+purchase:{answer:"pg",title:"Транзакционная операция",reason:"Последний товар должен быть продан максимум один раз. Нужны ограничения и атомарная операция в транзакционной системе. Поисковая копия для этого недостаточна."},
+lookup:{answer:"pg",title:"Точный заказ по ID",reason:"Если заказ хранится в PostgreSQL, разумно читать его из первичной базы по ключу. Дополнительный поисковый кластер не требуется."},
+catalog:{answer:"es",title:"Сложный поиск по каталогу",reason:"Elasticsearch хорошо подходит для релевантного полнотекстового поиска с гибкими анализаторами, фильтрами и оценкой качества. Но сравни его с PostgreSQL FTS по требованиям и цене."},
+filter:{answer:"pg",title:"Простой фильтр без сложного поиска",reason:"Небольшой список и простой SQL-фильтр обычно не оправдывают дополнительную инфраструктуру. PostgreSQL может эффективно отбирать такие строки с подходящими индексами."},
+combo:{answer:"both",title:"Сначала поиск, затем покупка",reason:"Поиск может использовать Elasticsearch для удобства, но окончательная проверка наличия и запись заказа выполняются транзакционно в PostgreSQL. Такой вариант добавляет стоимость синхронизации."}
+};
+el("route-check").addEventListener("click",()=>{
+const task=decisions[el("route-task").value],choice=el("route-choice").value,out=el("route-output");
+if(!choice){out.className="output warn";out.textContent="Сначала выбери архитектуру. Это обучение: можешь пробовать разные варианты.";return;}
+const correct=choice===task.answer;out.className="output "+(correct?"good":"warn");
+out.textContent=(correct?"✓ Хорошее начальное решение. ":"↗ Рассмотри ещё один вариант. ")+task.title+"\n"+task.reason+"\nВажное ограничение: это рекомендуемый вариант для описанного сценария, не универсальный запрет остальных способов.";
+});
+el("route-task").addEventListener("change",()=>{el("route-choice").value="";el("route-output").className="output";el("route-output").textContent="Новая задача выбрана. Сначала предположи архитектуру.";});
+const records=[
+{id:"P1",icon:"👟",title:"Кроссовки красные для бега",category:"Обувь",price:120},
+{id:"P2",icon:"👟",title:"Синие кроссовки для спорта",category:"Обувь",price:105},
+{id:"P3",icon:"🎧",title:"Красные беспроводные наушники",category:"Электроника",price:75},
+{id:"P4",icon:"☕",title:"Чай зелёный листовой",category:"Продукты",price:18},
+{id:"P5",icon:"📕",title:"Руководство по бегу",category:"Книги",price:24}
+];
+function normalize(s){return String(s).toLocaleLowerCase("ru").replace(/[^\p{L}\p{N}]+/gu," ").trim();}
+function simulateSearch(){
+const mode=el("search-mode").value,query=normalize(el("search-query").value),tokens=query.split(/\s+/).filter(Boolean);
+const hits=records.map(p=>{const text=normalize(p.title);const score=mode==="exact"?(text.includes(query)&&query?1:0):tokens.filter(t=>text.split(" ").includes(t)).length;return {...p,score};}).filter(p=>p.score>0).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
+const host=el("search-results");host.replaceChildren();
+hits.forEach(p=>{const card=document.createElement("div");card.className="product";const av=document.createElement("span");av.className="avatar";av.setAttribute("aria-hidden","true");av.textContent=p.icon;const copy=document.createElement("div");copy.className="meta";const name=document.createElement("b");name.textContent=p.title;const sub=document.createElement("small");sub.textContent=p.id+" · "+p.category+" · "+p.price+" у.е. · score "+p.score;copy.append(name,sub);card.append(av,copy);host.append(card);});
+el("search-explain").className="output "+(hits.length?"good":"warn");
+el("search-explain").textContent="Режим: "+(mode==="exact"?"цельная строка":"по отдельным словам")+"; запрос: «"+el("search-query").value+"».\nНайдено: "+hits.length+". "+(mode==="tokens"?"Учебный score = количество совпавших слов, сортировка по score.":"Проверено строгое вхождение всей фразы.")+"\nЭто только локальная модель JavaScript, не настоящий Elasticsearch или PostgreSQL FTS.";
+if(!hits.length){const msg=document.createElement("p");msg.textContent="Совпадений нет. Измени режим или запрос.";host.append(msg);}
+}
+el("search-run").addEventListener("click",simulateSearch);
+el("search-reset").addEventListener("click",()=>{el("search-query").value="красные кроссовки";el("search-mode").value="exact";simulateSearch();});simulateSearch();
+let sync={pg:3,es:3,visible:3,sold:false,delivered:false,refreshed:false};
+function drawSync(message){
+const ids=["sync-pg","sync-es","sync-ui"],vals=[sync.pg,sync.es,sync.visible];ids.forEach((id,i)=>el(id).textContent=String(vals[i]));
+el("sync-queue").textContent=sync.sold?(sync.delivered?"✓":"⏳"):"—";
+["sync-pg-box","sync-queue-box","sync-es-box","sync-ui-box"].forEach((id,i)=>{el(id).classList.toggle("stale",i>0&&sync.sold&&([sync.pg,sync.delivered?sync.pg:3,sync.es,sync.visible][i]!==sync.pg));});
+el("sync-sell").disabled=sync.sold;el("sync-deliver").disabled=!sync.sold||sync.delivered;el("sync-refresh").disabled=!sync.delivered||sync.refreshed;
+el("sync-output").className="output "+(sync.visible===sync.pg?"good":"warn");
+el("sync-output").textContent=message+"\nPostgreSQL="+sync.pg+", Elasticsearch индекс="+sync.es+", Search UI="+sync.visible+". "+(sync.visible!==sync.pg?"Поисковая копия отстаёт: покупку по ней не подтверждаем.":"В учебной модели значения согласованы.");
+}
+el("sync-sell").addEventListener("click",()=>{if(sync.sold)return;sync.pg=2;sync.sold=true;drawSync("✓ Продажа проведена в PostgreSQL. Событие пока не доставлено в поисковый индекс.");});
+el("sync-deliver").addEventListener("click",()=>{if(!sync.sold||sync.delivered)return;sync.delivered=true;sync.es=sync.pg;drawSync("✓ Worker доставил изменение. Elasticsearch уже получил новую цену/остаток, но поиск ещё может видеть старую проекцию до refresh.");});
+el("sync-refresh").addEventListener("click",()=>{if(!sync.delivered||sync.refreshed)return;sync.refreshed=true;sync.visible=sync.es;drawSync("✓ Поисковая видимость обновилась. Это учебный шаг; в настоящем кластере refresh обычно управляется автоматически.");});
+el("sync-reset").addEventListener("click",()=>{sync={pg:3,es:3,visible:3,sold:false,delivered:false,refreshed:false};drawSync("Начальное состояние восстановлено. Попробуй снова.");});
+drawSync("Старт: в PostgreSQL, индексе и поиске по 3 штуки. Нажми «Продать 1».");
+const fields=[["lab-a","A · Выбор систем"],["lab-b","B · Архитектура поиска и покупки"],["lab-c","C · Конкурентная покупка и устаревший поиск"],["lab-d","D · Trade-offs и Evidence"],["q1","K1 · PostgreSQL и транзакции"],["q2","K2 · PostgreSQL FTS vs Elasticsearch"],["q3","K3 · Source of truth vs search projection"],["q4","K4 · Старый остаток и диагностика"],["q5","K5 · Польза и цена отдельного поиска"]];
+function progress(){const filled=fields.filter(([id])=>el(id).value.trim()).length;el("report-count").textContent=filled+" из "+fields.length;el("report-bar").style.width=(100*filled/fields.length)+"%";}
+fields.forEach(([id])=>el(id).addEventListener("input",progress));progress();
+function buildReport(){const lines=["M01-L01 — СДАЮ ЛАБОРАТОРНУЮ","TicketFlow / M01 «Ментальная модель Elasticsearch»","Никакого реального кластера — архитектурный сценарий","",...fields.flatMap(([id,title])=>[title,el(id).value.trim()||"[нет ответа]",""]),"Прошу провести Code Review по критериям Theory ≥80, Practice ≥90, оценить архитектуру, корректность, согласованность и сохранить результаты в Tracker."];return lines.join("\n");}
+el("report-build").addEventListener("click",()=>{el("report").value=buildReport();el("report-feedback").textContent="Отчёт сформирован. Скопируй его и отправь в чат. Нажатие здесь не сдаёт работу и не меняет Tracker.";});
+el("report-copy").addEventListener("click",async()=>{el("report").value=buildReport();try{await navigator.clipboard.writeText(el("report").value);el("report-feedback").textContent="Отчёт скопирован! Теперь вставь его в ChatGPT для официального Code Review.";}catch(err){el("report").focus();el("report").select();el("report-feedback").textContent="Не удалось автоматически скопировать. Текст выделен — нажми Ctrl+C и вставь в чат."; }});
+</script>
+</body></html>

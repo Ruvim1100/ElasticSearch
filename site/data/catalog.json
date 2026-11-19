@@ -124,7 +124,27 @@
           "title": "Мини-проект: объясни архитектуру и проектируй каталог"
         }
       ],
-      "lessons": []
+      "lessons": [
+        {
+          "id": "M01-L01",
+          "moduleId": "M01",
+          "title": "Когда выбирать Elasticsearch, а когда PostgreSQL",
+          "summary": "Пошаговая ментальная модель архитектуры данных: PostgreSQL vs Elasticsearch, source of truth, поиск, синхронизация, четыре интерактивных тренажёра и самостоятельная лабораторная TicketFlow.",
+          "durationMinutes": 150,
+          "kind": "Interactive lesson + architecture lab",
+          "tags": [
+            "PostgreSQL",
+            "Elasticsearch",
+            "Architecture",
+            "Full-text search",
+            "Consistency",
+            ".NET",
+            "TypeScript"
+          ],
+          "publishedAt": "2026-11-19",
+          "href": "lessons/M01-L01/index.html"
+        }
+      ]
     },
     {
       "id": "M02",
