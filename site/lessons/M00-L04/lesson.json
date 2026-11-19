@@ -1,0 +1,17 @@
+{
+  "id": "M00-L04",
+  "moduleId": "M00",
+  "title": "Разбор результатов и персональная карта пробелов",
+  "summary": "Интерактивное чтение Evidence, карта Mastery 0–5, визуальный симулятор PostgreSQL→Elasticsearch→Search и самостоятельная лабораторная по диагностике и плану обучения. Без публичного хранения личных оценок.",
+  "durationMinutes": 120,
+  "kind": "Interactive lesson + lab",
+  "tags": [
+    "Diagnostics",
+    "Evidence",
+    "Skills map",
+    "Near real-time",
+    "Mastery",
+    "Review Queue"
+  ],
+  "publishedAt": "2026-11-19"
+}

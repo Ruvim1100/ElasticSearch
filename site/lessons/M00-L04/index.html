@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1d31"><meta name="description" content="M00-L04 — интерактивная диагностика навыков, доказательства знаний, поиск причин рассинхронизации PostgreSQL и Elasticsearch, персональный план развития.">
+<title>M00-L04 · Карта знаний и инженерная диагностика · Elasticsearch Academy</title>
+<link rel="icon" href="../../assets/icon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#091626;--paper:#11283d;--panel:#1a354a;--panel2:#1d3e50;--line:#426579;--ink:#f0f9ff;--muted:#b9cfdc;--cyan:#8cdcff;--mint:#7ce7c9;--warn:#ffd2a0;--red:#ffb3ac;--good:#a1efd9;--soft:#113846;--sh:0 16px 37px #0002;font:16.5px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+:root.light{color-scheme:light;--bg:#f2f8fb;--paper:#fff;--panel:#edf5f9;--panel2:#e0f1f1;--line:#afc8d4;--ink:#173548;--muted:#486578;--cyan:#086893;--mint:#006e55;--warn:#976008;--red:#ac3333;--good:#006d50;--soft:#e5f6f4;--sh:0 13px 34px #163c5010}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;color:var(--ink);background:radial-gradient(circle at 80% 2%,#168f9a1b,transparent 31%),var(--bg)}a{color:var(--cyan);text-underline-offset:4px}a:hover{text-decoration-thickness:2px}button,select,textarea,input{font:inherit;color:inherit}button,select,textarea{border:1px solid var(--line);border-radius:11px;background:var(--panel);padding:11px 13px}button{font-weight:740;cursor:pointer}button:hover{border-color:var(--mint)}button.primary{background:linear-gradient(110deg,#85dafa,#78ead0);border:0;color:#052c36;padding:12px 17px}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--mint);outline-offset:3px}textarea{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;min-height:142px;resize:vertical;line-height:1.6}.wrap{width:min(1150px,calc(100% - 34px));margin:auto}h1,h2,h3{letter-spacing:-.033em;line-height:1.2}h1{font-size:clamp(2.45rem,6vw,4.8rem);margin:12px 0 19px}h2{font-size:clamp(1.58rem,3.5vw,2.25rem);margin:5px 0 17px}h3{font-size:1.18rem;margin:6px 0 12px}p{max-width:76ch}p,li{line-height:1.65}.muted,small{color:var(--muted)}.kicker{color:var(--mint);font-size:.78rem;letter-spacing:.14em;font-weight:850;text-transform:uppercase}.skip{position:absolute;left:-9999px;top:9px;z-index:90}.skip:focus{left:8px;background:var(--paper);padding:12px}
+header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:40}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px}.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-weight:830;letter-spacing:-.02em}.brand img{width:30px;height:30px}.topright{display:flex;gap:9px;align-items:center}
+.hero{margin:28px 0 16px;padding:clamp(24px,5vw,55px);background:linear-gradient(120deg,var(--paper),var(--panel));border:1px solid var(--line);border-radius:26px;box-shadow:var(--sh);overflow:hidden}.herogrid{display:grid;grid-template-columns:1.15fr 1fr;gap:34px;align-items:center}.hero h1 em{font-style:normal;color:var(--mint)}.lead{font-size:1.13rem;color:var(--muted);max-width:60ch}.tags,.menu,.actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.tag{font-size:.78rem;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:5px 11px}.primarylink{display:inline-flex;padding:11px 17px;border-radius:11px;background:var(--mint);color:var(--bg);font-weight:800;text-decoration:none;margin:8px 0 19px}.monitor{background:#0c263a;border:1px solid #3e6b7f;border-radius:18px;overflow:hidden;box-shadow:0 18px 36px #0002;color:#ecf9ff}.monhead{padding:11px 14px;background:#15394b;border-bottom:1px solid #315b6c;font-size:.76rem;display:flex;gap:7px;align-items:center;color:#b2ccdc}.dot{width:9px;height:9px;border-radius:50%;background:#d38184}.dot:nth-child(2){background:#e2c075}.dot:nth-child(3){background:#73caab}.monbody{padding:19px}.monstat{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#123c4b;padding:11px 13px;margin:8px 0;border-radius:11px}.monstat strong{color:#8ce3cc}.monstat .warning{color:#f0cc94}.minibar{height:8px;background:#1c4557;border-radius:99px;overflow:hidden;margin:9px 0 15px}.minibar span{display:block;height:100%;background:linear-gradient(90deg,#72c5e7,#81e8c5);width:73%}.menu{padding:11px 0}.menu a{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px;text-decoration:none;color:var(--ink);font-size:.84rem;font-weight:730}
+section{margin:21px 0;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:var(--sh);padding:clamp(21px,4vw,39px)}.sectop{display:flex;gap:16px;align-items:center;margin:0 0 14px}.index{display:grid;place-items:center;flex-shrink:0;width:45px;height:45px;border-radius:13px;background:var(--soft);border:1px solid var(--line);color:var(--mint);font-weight:850}.grid{display:grid;gap:15px;grid-template-columns:repeat(3,minmax(0,1fr))}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:var(--panel);border:1px solid var(--line);padding:21px;border-radius:15px;min-width:0}.card p{color:var(--muted);margin:8px 0}.card strong{color:var(--ink)}.card .label{font-size:.74rem;letter-spacing:.1em;color:var(--mint);font-weight:840;text-transform:uppercase}.callout{padding:17px 19px;background:var(--soft);border-left:4px solid var(--mint);border-radius:11px;margin:17px 0}.callout p{margin:0}.callout.warning{border-left-color:var(--warn)}.callout.warning strong{color:var(--ink)}
+.flow{display:flex;gap:8px;align-items:stretch;margin:21px 0}.flowitem{flex:1;min-width:0;border:1px solid var(--line);background:var(--panel);border-radius:13px;padding:16px 10px;text-align:center}.flowitem strong,.flowitem small{display:block}.arrow{display:flex;align-items:center;color:var(--mint);font-weight:900;font-size:1.25rem}
+.interactive{background:linear-gradient(130deg,var(--panel),var(--paper));border:1px solid var(--line);border-radius:16px;padding:clamp(17px,3vw,27px);margin-top:20px}.itop{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:13px}.itop h3{margin:0}.micro{border:1px solid var(--line);border-radius:99px;padding:4px 11px;color:var(--mint);font-weight:780;font-size:.78rem}.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}.field{display:flex;flex-direction:column;gap:7px;font-weight:700;min-width:0}.field select,.field textarea{width:100%;min-width:0}.field small{font-weight:400}.feedback{background:var(--soft);border:1px solid var(--line);border-radius:13px;padding:16px;margin:16px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.feedback.good{border-color:var(--mint)}.feedback.warn{border-color:var(--warn)}.feedback.bad{border-color:var(--red)}.pill{font-size:.78rem;border:1px solid var(--line);border-radius:8px;padding:4px 9px;display:inline-flex;color:var(--mint);font-weight:770}.sample{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:17px;overflow:auto;font:.85rem/1.65 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}code,pre{font-family:ui-monospace,Consolas,monospace;font-size:.9em}code{background:var(--panel);padding:2px 5px;border-radius:5px}pre{background:var(--bg);overflow:auto;border-radius:12px;padding:17px;border:1px solid var(--line);line-height:1.6}pre code{background:transparent;padding:0;font-size:1em}.skillrow{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(140px,.85fr);gap:12px;padding:13px 0;align-items:center;border-bottom:1px solid var(--line)}.skillrow:last-child{border:0}.skillname{font-weight:740}.skillbar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin-top:8px}.skillbar>span{height:100%;width:0;display:block;background:linear-gradient(90deg,var(--cyan),var(--mint));transition:width .17s}.skillrow select{width:100%}.heatlegend{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:.83rem}.heatlegend b{color:var(--ink)}.meter{height:9px;border-radius:99px;background:var(--panel2);overflow:hidden}.meter>span{height:100%;background:linear-gradient(90deg,var(--cyan),var(--mint));width:0;display:block;transition:width .17s}.stagewrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.stage{border:1px solid var(--line);background:var(--paper);padding:17px 11px;border-radius:12px;text-align:center;min-width:0}.stage .tiny{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.stage strong{display:block;font-size:1.25rem;margin-top:8px;overflow-wrap:anywhere}.stage small{display:block}.stage.active{border-color:var(--mint);box-shadow:inset 0 0 0 1px var(--mint)}.stage.lag{border-color:var(--warn)}.stage .counter{font:600 .82rem ui-monospace,Consolas,monospace;color:var(--muted)}.actions{margin-top:15px}details{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px 17px;margin:10px 0}summary{cursor:pointer;font-weight:750}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:510px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:11px}th{color:var(--mint);font-size:.86rem}.labbox{border:1px solid var(--line);padding:20px;border-radius:15px;background:var(--panel);margin:15px 0}.labbox h3{margin:3px 0 12px}.labbox p{margin:10px 0}.qcard{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:13px 0}.qcard label{display:block;font-weight:780;margin-bottom:10px}.qcard textarea{width:100%;min-height:150px}.progress{height:9px;background:var(--panel2);border-radius:99px;overflow:hidden}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--mint));transition:width .17s}li{max-width:82ch;margin:6px 0}li::marker{color:var(--mint)}footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:25px 0 60px}
+@media(max-width:850px){.herogrid,.grid,.grid.two,.formgrid{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{justify-content:center;min-height:22px}.arrow:after{content:"↓"}.arrow span{display:none}.stagewrap{grid-template-columns:repeat(2,minmax(0,1fr))}.skillrow{grid-template-columns:minmax(0,1fr)}.monitor{max-width:560px}}
+@media(max-width:460px){.wrap{width:calc(100% - 24px)}.hero{padding:24px;margin-top:15px}.brand{font-size:.85rem}.brand img{width:25px;height:25px}.top button{font-size:.8rem}.stage{padding:12px 7px}.stage strong{font-size:1.04rem}.qcard{padding:15px}.menu a{font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.skillbar>span,.meter>span,.progress span{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к уроку</a>
+<header><nav class="wrap top" aria-label="Главная навигация"><a href="../../index.html" class="brand"><img src="../../assets/icon.svg" alt="">Elasticsearch Engineering Academy</a><div class="topright"><button type="button" id="theme" aria-label="Переключить тёмную и светлую тему">Светлая тема</button></div></nav></header>
+<main id="main" class="wrap">
+<div class="hero"><div class="herogrid"><div>
+<span class="kicker">M00-L04 · Финальный урок диагностики</span>
+<h1>Твои знания.<br><em>Твой маршрут.</em></h1>
+<p class="lead">Научись превращать результаты тестов в понятную карту навыков и план роста. Мы не просто ставим баллы: мы выясняем, что уже подтверждено, где остались пробелы и как их закрывать инженерным способом.</p>
+<a class="primarylink" href="#example">Начать с простого примера →</a>
+<div class="tags"><span class="tag">20% теория · 60% практика</span><span class="tag">≈ 2 часа</span><span class="tag">Три интерактивных тренажёра</span><span class="tag">Без кластера</span></div>
+</div><div class="monitor" aria-label="Иллюстрация процесса превращения проверки в план развития">
+<div class="monhead"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:9px">learning-report / example</span></div><div class="monbody">
+<small>ПРОВЕРКА · СИНТЕТИЧЕСКИЙ ПРИМЕР</small>
+<div class="monstat"><span>Синтаксис HTTP</span><strong>✓ Понятно</strong></div>
+<div class="monstat"><span>Диагностика задержки</span><strong class="warning">↗ Практика</strong></div>
+<div class="monstat"><span>Evidence / журнал</span><strong>✓ Освоено</strong></div>
+<div class="minibar"><span></span></div>
+<small>Наблюдение → Причина → Практика → Повторная проверка</small>
+</div></div></div></div>
+<nav class="menu" aria-label="Разделы урока"><a href="#why">Зачем</a><a href="#example">Пример</a><a href="#classifier">Evidence</a><a href="#map">Карта навыков</a><a href="#pipeline">Поток данных</a><a href="#theory">Инженерные правила</a><a href="#practice">Лабораторная</a><a href="#knowledge">Knowledge Check</a><a href="#references">Источники</a></nav>
+<section id="why">
+<div class="sectop"><span class="index">01</span><div><span class="kicker">Why It Matters</span><h2>Почему результат теста — ещё не вся картина?</h2></div></div>
+<p>Представь, что разработчик правильно написал <code>GET /products/_doc/42</code>. Это говорит о знании REST API, но пока не доказывает, что он способен диагностировать ошибку в production, учитывать права или подготовить проверяемые тестовые данные.</p>
+<div class="grid">
+<div class="card"><span class="label">Observation</span><h3>Что произошло?</h3><p>Собираем факты: входные данные, версию, ожидаемый и фактический результат.</p></div>
+<div class="card"><span class="label">Gap</span><h3>Чего не хватает?</h3><p>Пробел в знаниях, проверке, объяснении или воспроизводимости — это разные вещи.</p></div>
+<div class="card"><span class="label">Action</span><h3>Что делать дальше?</h3><p>Назначаем конкретную задачу и способ повторной проверки, а не общее «почитать больше».</p></div></div>
+<div class="callout"><p><strong>Что научишься делать:</strong> отличать факт от предположения, классифицировать пробелы, составлять карту Mastery 0–5, диагностировать задержки данных и создавать измеримый план на следующие уроки.</p></div>
+<p><strong>Что нужно знать заранее:</strong> основы HTTP, JSON, Docker и разницу между Expected и Actual Result (M00-L01–L03). Здесь используется вымышленный магазин AcademyShop с синтетическими данными.</p>
+</section>
+<section id="mental">
+<div class="sectop"><span class="index">02</span><div><span class="kicker">Mental Model</span><h2>От ошибки к плану: пять понятных шагов</h2></div></div>
+<div class="flow" role="img" aria-label="Факт приводит к сравнению с требованием, затем к объяснению, плану действий и повторной проверке"><div class="flowitem"><strong>Факт</strong><small>Что мы увидели?</small></div><div class="arrow"><span>→</span></div><div class="flowitem"><strong>Сравнение</strong><small>Expected vs Actual</small></div><div class="arrow"><span>→</span></div><div class="flowitem"><strong>Причина</strong><small>Чего не знаем?</small></div><div class="arrow"><span>→</span></div><div class="flowitem"><strong>Практика</strong><small>Что исправить?</small></div><div class="arrow"><span>→</span></div><div class="flowitem"><strong>Проверка</strong><small>Как подтвердить?</small></div></div>
+<p><strong>Evidence</strong> (доказательство) — сведения, по которым другой инженер может повторить эксперимент. <strong>Gap</strong> (пробел) — конкретное умение, ещё не подтверждённое проверкой. <strong>Mastery</strong> — уровень владения навыком, а не процент правильных ответов.</p>
+<div class="grid two">
+<div class="card"><h3>Четыре разных статуса</h3><p><strong>Published</strong> — материал существует. <strong>Studied</strong> — его изучили. <strong>Submitted</strong> — работа сдана. <strong>Verified</strong> — наставник проверил результаты по критериям и сохранил Evidence.</p></div>
+<div class="card"><h3>Уровни Mastery</h3><p><strong>0</strong> — нет подтверждения; <strong>1</strong> — узнаю термин; <strong>2</strong> — объясняю; <strong>3</strong> — самостоятельно применяю; <strong>4</strong> — диагностирую; <strong>5</strong> — проектирую и обучаю других.</p></div></div>
+<div class="callout warning"><p><strong>Важное различие:</strong> знание синтаксиса API может быть Verified на уровне 3, а умение расследовать задержку данных пока оставаться на уровне 2. Это не противоречие: проверяются разные компетенции.</p></div>
+</section>
+<section id="example">
+<div class="sectop"><span class="index">03</span><div><span class="kicker">Guided Worked Example · Не оценивается</span><h2>Разбор одной ошибки — с начала до конца</h2></div></div>
+<p>Сценарий для тренировки: в тестовом API пользователь пытается прочитать отсутствующий товар с ID <code>999</code>.</p>
+<div class="grid two">
+<div class="card"><span class="label">Входные данные</span><pre><code>GET /api/products/999
+Seed: только товары 1 и 2
+Expected: 404 Not Found
+Actual: 404 Not Found</code></pre><p>Тест проходит: сервер правильно сообщает, что товара нет.</p></div>
+<div class="card"><span class="label">Инженерная интерпретация</span><p><strong>PASS</strong> подтверждает обработку отсутствующего ресурса, но <strong>не доказывает</strong>, что API возвращает правильный товар для существующего ID.</p><p><strong>Gap:</strong> не хватает теста успешного получения существующего товара. <strong>Action:</strong> добавить отдельный сценарий с известным ID и ожидаемыми полями.</p></div></div>
+<div class="callout"><p><strong>Полный вывод:</strong> мы знаем вход, предварительные данные, Expected, Actual и границы доказательства. Решение — не «переписать HTTP», а добавить недостающий тест. Этот пример разобран полностью и не является ответом на самостоятельную лабораторную ниже.</p></div>
+</section>
+<section id="classifier">
+<div class="sectop"><span class="index">04</span><div><span class="kicker">Interactive 01 · Evidence Detective</span><h2>Отличай доказательство от впечатления</h2></div></div>
+<p>Выбери карточку вымышленного отчёта и реши, насколько сильное у неё Evidence. После выбора получишь объяснение — это <strong>тренировка без оценки</strong>.</p>
+<div class="interactive">
+<div class="itop"><h3>Детектив по тестовым отчётам</h3><span class="micro">Training · с обратной связью</span></div>
+<label class="field" for="ev-case">Учебный кейс<select id="ev-case"><option value="log">«Получил HTTP 200, значит поиск корректен»</option><option value="pair">«Expected ≠ Actual, найдено несоответствие»</option><option value="proof">«Seed, Expected/Actual, версия и лог совпали»</option></select></label>
+<div class="sample" id="ev-record" aria-live="polite"></div>
+<label class="field" for="ev-guess" style="margin-top:12px">Что можно утверждать?<select id="ev-guess"><option value="">Выбери вывод…</option><option value="ok">Требование проверено и подтверждено</option><option value="bug">Зафиксировано несоответствие требованию</option><option value="unknown">Данных недостаточно для вывода о корректности</option></select></label>
+<div class="actions"><button class="primary" id="ev-check" type="button">Проверить мой вывод</button></div>
+<div id="ev-result" class="feedback" role="status" aria-live="polite">Сначала выбери кейс и свой вывод.</div>
+</div></section>
+<section id="map">
+<div class="sectop"><span class="index">05</span><div><span class="kicker">Interactive 02 · Skills Radar</span><h2>Построй собственную карту навыков</h2></div></div>
+<p>Выбирай уровень для каждого умения. Мы <strong>не загружаем твои оценки из Google Sheets на публичную страницу</strong>: ты сам определяешь свою оценку для тренировки. Кнопка создаст ориентировочный план, но не заменит Code Review наставника.</p>
+<div class="interactive">
+<div class="itop"><h3>Моя диагностическая карта</h3><span class="micro">Локально в браузере</span></div>
+<div class="heatlegend"><span><b>0</b> — пока не оценено</span><span><b>1–2</b> — изучать</span><span><b>3</b> — применять</span><span><b>4–5</b> — углублять</span></div>
+<div id="skill-rows"></div>
+<div class="actions"><button class="primary" id="skill-plan" type="button">Построить план</button><button id="skill-clear" type="button">Очистить уровни</button></div>
+<div class="feedback" id="skill-output" aria-live="polite">Выбери хотя бы один уровень — появится полезная рекомендация.</div>
+</div>
+<div class="callout"><p><strong>Не путай:</strong> эта диаграмма показывает твою самооценку, а не уже подтверждённые знания. Официальные оценки и Mastery хранятся в приватном Tracker, который наставник обновляет только после проверки работы.</p></div></section>
+<section id="pipeline">
+<div class="sectop"><span class="index">06</span><div><span class="kicker">Interactive 03 · Data Flow</span><h2>Как цена проходит из PostgreSQL в поиск?</h2></div></div>
+<p>Представь магазин, в котором цена товара меняется с <code>100</code> на <code>120</code>. Elasticsearch используется как поисковая проекция. Обновление может проходить через фоновый worker (обработчик сообщений), а после индексирования поиск может ждать <strong>refresh</strong> — момента, когда новые данные станут доступны для поисковых запросов.</p>
+<div class="interactive">
+<div class="itop"><h3>Симулятор цепочки событий</h3><span class="micro">Синтетические данные · без сервера</span></div>
+<div class="formgrid"><label class="field">Состояние системы<select id="pipe-mode"><option value="normal">Обновление доставлено и видно в поиске</option><option value="queue">Сообщение ещё в очереди</option><option value="refresh">Индекс обновлён, поиск ещё не видит</option><option value="alias">Поиск смотрит в другой индекс</option></select></label>
+<div class="field"><span>Текущий шаг</span><button class="primary" type="button" id="pipe-next">Показать следующий шаг</button></div></div>
+<div class="stagewrap" id="pipe-stages" aria-label="Этапы передачи данных">
+<div class="stage"><div class="tiny">1 · Source</div><strong id="pipe-a">—</strong><small>PostgreSQL</small></div>
+<div class="stage"><div class="tiny">2 · Queue</div><strong id="pipe-b">—</strong><small>Event / Worker</small></div>
+<div class="stage"><div class="tiny">3 · Index</div><strong id="pipe-c">—</strong><small>Elasticsearch</small></div>
+<div class="stage"><div class="tiny">4 · Search</div><strong id="pipe-d">—</strong><small>Результат поиска</small></div>
+</div>
+<div class="actions"><button id="pipe-reset" type="button">Начать заново</button><span class="pill" id="pipe-step">Шаг 1 из 4</span></div>
+<div class="feedback" id="pipe-output" aria-live="polite">Выбери сценарий и нажми «Показать следующий шаг».</div>
+</div>
+<details><summary>Почему Elasticsearch иногда возвращает старые данные, даже если документ уже записан?</summary><p><strong>Near real-time search</strong> (поиск почти в реальном времени) означает, что недавно записанные документы могут становиться видимыми для поиска после refresh. При этом <code>GET /{index}/_doc/{id}</code> имеет собственную семантику чтения и может увидеть документ раньше поисковой выдачи. Не путай задержку доставки данных в Elasticsearch с задержкой refresh уже проиндексированного документа.</p><p>Подробнее: <a href="https://www.elastic.co/docs/manage-data/data-store/near-real-time-search" target="_blank" rel="noopener noreferrer">официальная Near real-time search</a> и <a href="https://www.elastic.co/docs/reference/elasticsearch/rest-apis/refresh-parameter" target="_blank" rel="noopener noreferrer">Refresh parameter</a>.</p></details>
+</section>
+<section id="theory">
+<div class="sectop"><span class="index">07</span><div><span class="kicker">Technical Deep Dive · Маленькими шагами</span><h2>Пять типов пробелов и как их закрывать</h2></div></div>
+<div class="grid">
+<div class="card"><span class="label">Knowledge</span><h3>Не знаю понятие</h3><p>Учебная задача: объяснить термин и привести свой пример без подсказки.</p></div>
+<div class="card"><span class="label">Correctness</span><h3>Неверный результат</h3><p>Сравнить Expected и Actual на данных, которые способны выявить ошибку.</p></div>
+<div class="card"><span class="label">Evidence</span><h3>Нельзя воспроизвести</h3><p>Добавить seed, сборку, точные шаги, статус, фактический ответ и дату.</p></div>
+<div class="card"><span class="label">Diagnostics</span><h3>Не найдена причина</h3><p>Сформулировать гипотезы и эксперимент, который различит эти гипотезы.</p></div>
+<div class="card"><span class="label">Safety</span><h3>Риск для production</h3><p>Проверить права, изоляцию среды, отсутствие секретов и безопасное действие.</p></div>
+<div class="card"><span class="label">Planning</span><h3>Нет следующего шага</h3><p>Назначить действие, критерий успеха и дату повторной проверки.</p></div></div>
+<h3>Воспроизводимая диагностика — как мыслит инженер</h3>
+<div class="grid two"><div class="card"><span class="label">REST · read only</span><pre><code>GET /products/_doc/42
+
+GET /products/_search
+{
+  "query": {
+    "ids": { "values": ["42"] }
+  }
+}</code></pre><p>Эти примеры читают данные разными механизмами. Для выполнения в реальности предварительно убедись, что индекс и документ существуют и есть права <code>read</code>.</p></div>
+<div class="card"><span class="label">ASP.NET Core · модель</span><pre><code>// Для диагностики логируй метаданные:
+// correlationId, documentId,
+// expected, observed, version,
+// timestamp и outcome.
+// Не логируй credentials и PII.</code></pre><p>В TypeScript/Next.js браузер отправляет запрос твоему серверу, а не обращается к закрытому Elasticsearch с API-ключом. Весь анализ проводится на безопасных тестовых данных.</p></div></div>
+<div class="callout warning"><p><strong>Не используй Refresh API как «волшебную кнопку исправления».</strong> Он влияет на видимость уже проиндексированных документов, но не доставляет потерянное сообщение из очереди и не исправляет неверно выбранный индекс. Частые принудительные refresh могут ухудшить производительность. Сначала диагностика, потом вмешательство.</p></div>
+<h3>Когда ставить повторение?</h3><p><strong>Spaced repetition</strong> (интервальное повторение) — возвращение к задаче через время, чтобы подтвердить долговременное понимание. Для Academy используем ориентиры 1, 7, 21 и 60 дней. Повторная проверка должна быть новой самостоятельной попыткой, а не копированием старого ответа.</p>
+</section>
+<section id="practice">
+<div class="sectop"><span class="index">08</span><div><span class="kicker">Independent Lab · Официальная сдача</span><h2>Лабораторная: инженерная карта дальнейшего обучения</h2></div></div>
+<div class="callout warning"><p><strong>Только этот раздел и Knowledge Check оцениваются.</strong> В предыдущих симуляторах можно экспериментировать без ограничений. Здесь нужно самостоятельно провести анализ и предложить воспроизводимый план. Готовое решение до твоей попытки не раскрывается.</p></div>
+<div class="labbox">
+<span class="kicker">Сценарий AcademyShop · Синтетические данные</span>
+<h3>Два наблюдения из тестовой среды</h3>
+<p><strong>Инцидент A:</strong> цена товара <code>id=51</code> в PostgreSQL обновилась до <code>220</code> в 14:00. В 14:03 API поиска всё ещё возвращает <code>180</code>. Лог worker за этот период не приложен. Известна лишь версия Elasticsearch Stack 9.x.</p>
+<p><strong>Инцидент B:</strong> коллега ожидает <code>HTTP 200</code> на <code>GET /products/_doc/42</code>, но получает <code>403</code>. Для теста не записано, какими правами обладал токен. Seed содержит товар 42, а источник API Reference указан без даты проверки.</p>
+<p class="muted">Данные вымышленные; не нужно запускать реальные запросы. Твоя цель — не угадать одну причину, а предложить способ <strong>различить возможные причины</strong>.</p></div>
+<div class="grid two">
+<div class="card"><span class="label">Часть A · Evidence</span><h3>От факта к гипотезам</h3><p>Для каждого инцидента раздели подтверждённые факты и предположения. Запиши минимум две возможные причины и конкретную проверку, которая помогла бы их различить.</p></div>
+<div class="card"><span class="label">Часть B · Plan</span><h3>Приоритеты и ограничения</h3><p>Определи порядок безопасных действий: что проверить первым, что вторым, что не следует делать сразу. Укажи права доступа, предусловия и критерии успешной диагностики.</p></div>
+<div class="card"><span class="label">Часть C · Growth</span><h3>Карта навыков</h3><p>Выбери 3–5 умений, которые уже можешь подтвердить своими работами, и 1–2 навыка для углубления. Для каждого укажи уровень 0–5 и чем его докажешь.</p></div>
+<div class="card"><span class="label">Часть D · Evidence / Handoff</span><h3>Передача работы</h3><p>Подготовь воспроизводимый отчёт: источники, дата, версии, ожидаемые/фактические наблюдения и план повторений. Отдельно укажи, что именно остаётся неизвестным.</p></div></div>
+<h3>Acceptance Criteria · Практика 100 баллов</h3>
+<div class="tablewrap"><table><thead><tr><th>Раздел</th><th>Вес</th><th>Что я проверю</th></tr></thead><tbody>
+<tr><td>A · Факты и гипотезы</td><td>30</td><td>Оба кейса, минимум 2 проверяемые причины на каждый</td></tr>
+<tr><td>B · Диагностический план</td><td>30</td><td>Последовательность шагов, безопасность, предусловия, критерии успеха</td></tr>
+<tr><td>C · Карта навыков</td><td>25</td><td>Обоснованные уровни, сильные стороны и конкретные пробелы</td></tr>
+<tr><td>D · Evidence &amp; повторения</td><td>15</td><td>Версия, данные, ссылки, дата, журнал, план проверки</td></tr>
+</tbody></table></div>
+<p class="muted">Урок станет Verified после успешной проверки теории ≥80%, практики ≥90% и самостоятельного объяснения. Для M00 не требуется проходить обязательный экзамен с проходным баллом. Не путай завершение лабораторной и завершение всего модуля.</p>
+<h3>Моя рабочая тетрадь</h3>
+<div class="formgrid">
+<label class="field">A · Факты, гипотезы и проверки<textarea id="lab-a" placeholder="Инцидент A: факт..., гипотеза 1..., проверка...&#10;Инцидент B: факт..., гипотеза 1..., проверка..."></textarea></label>
+<label class="field">B · Безопасный план диагностики<textarea id="lab-b" placeholder="Порядок проверок, предусловия, права, ожидаемый результат, что нельзя делать сразу..."></textarea></label>
+<label class="field">C · Самооценка навыков и доказательства<textarea id="lab-c" placeholder="Навык → уровень 0–5 → Evidence. Укажи 3–5 сильных и 1–2 для развития..."></textarea></label>
+<label class="field">D · Evidence / стратегия повторений<textarea id="lab-d" placeholder="Ссылки, версии, дата, формат журнала, 1/7/21-дневный план..."></textarea></label>
+</div>
+</section>
+<section id="knowledge">
+<div class="sectop"><span class="index">09</span><div><span class="kicker">Knowledge Check &amp; Submission</span><h2>Пять вопросов — объясни своими словами</h2></div></div>
+<p>Это отдельная часть для проверки понимания. Не нужно давать длинные определения; лучше привести короткий инженерный пример.</p>
+<div class="qcard"><label for="q1">K1 · Чем отличается наблюдение (Observation) от гипотезы (Hypothesis)? Покажи разницу на своём примере.</label><textarea id="q1" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q2">K2 · Почему успешно пройденный один тест не доказывает отсутствие ошибок? Как выбрать тест, который действительно выявляет риск?</label><textarea id="q2" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q3">K3 · Что означает Mastery 3 и чем он отличается от Mastery 4? Каким Evidence можно это подтвердить?</label><textarea id="q3" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q4">K4 · Назови различие между задержкой синхронизации и задержкой видимости для поиска (refresh). Почему это важно при расследовании?</label><textarea id="q4" placeholder="Твой ответ..."></textarea></div>
+<div class="qcard"><label for="q5">K5 · Как сформулировать полезную задачу в Review Queue и по каким критериям её можно закрыть?</label><textarea id="q5" placeholder="Твой ответ..."></textarea></div>
+<div class="interactive">
+<div class="itop"><h3>Отчёт для Code Review</h3><span class="micro">Никакой автоматической оценки</span></div>
+<div class="controls"><strong id="report-count">0 / 9</strong><span class="muted">полей заполнено</span></div><div class="progress"><span id="report-bar"></span></div>
+<div class="actions"><button id="report-build" class="primary" type="button">Сформировать отчёт</button><button id="report-copy" type="button">Скопировать отчёт</button></div>
+<label class="field" style="margin-top:16px" for="report-text">Полный отчёт для отправки<textarea id="report-text" readonly placeholder="Здесь появится текст после нажатия кнопки."></textarea><small>Отчёт не отправляется автоматически. Скопируй его в чат; только после Code Review результат может попасть в Google Sheets.</small></label>
+<div id="report-msg" class="feedback" aria-live="polite">После выполнения заданий сформируй отчёт и отправь его наставнику.</div>
+</div>
+</section>
+<section id="references">
+<div class="sectop"><span class="index">10</span><div><span class="kicker">Official References · Проверено 19.11.2026</span><h2>Официальные источники и следующий шаг</h2></div></div>
+<div class="grid two">
+<div class="card"><span class="label">Elasticsearch 9.x</span><h3>Search API</h3><p>Метод, path, Required authorization: index privilege <code>read</code>.</p><a href="https://www.elastic.co/docs/api/doc/elasticsearch/v9/operation/operation-search" target="_blank" rel="noopener noreferrer">Открыть API ↗</a></div>
+<div class="card"><span class="label">Elasticsearch 9.x</span><h3>Get document</h3><p>Чтение документа по ID и возможные ответы.</p><a href="https://www.elastic.co/docs/api/doc/elasticsearch/v9/operation/operation-get" target="_blank" rel="noopener noreferrer">Открыть API ↗</a></div>
+<div class="card"><span class="label">Data flow</span><h3>Near real-time search</h3><p>Почему обновлённые документы не всегда сразу видны в поиске.</p><a href="https://www.elastic.co/docs/manage-data/data-store/near-real-time-search" target="_blank" rel="noopener noreferrer">Читать объяснение ↗</a></div>
+<div class="card"><span class="label">Performance</span><h3>Refresh parameter</h3><p>Семантика refresh и стоимость принудительного обновления.</p><a href="https://www.elastic.co/docs/reference/elasticsearch/rest-apis/refresh-parameter" target="_blank" rel="noopener noreferrer">Читать документацию ↗</a></div>
+<div class="card"><span class="label">Security</span><h3>Elasticsearch Privileges</h3><p>Право <code>read</code> и принцип наименьших привилегий.</p><a href="https://www.elastic.co/docs/reference/elasticsearch/security-privileges" target="_blank" rel="noopener noreferrer">Открыть справочник ↗</a></div>
+<div class="card"><span class="label">Project</span><h3>Academy Tracker</h3><p>Личная оценка, статус урока, Mastery и Review Queue не публикуются в HTML.</p><a href="../../index.html">Вернуться в Dashboard ↗</a></div>
+</div>
+<div class="callout"><p><strong>Что дальше?</strong> После лабораторной наставник сверит ответы с критериями, обновит приватный Tracker и определит готовность к модулю M01. <strong>Не переходи к M01 до Verified урока M00-L04.</strong></p></div>
+</section>
+</main>
+<footer class="wrap"><a href="../../index.html">← Academy Dashboard</a><a href="https://github.com/Ruvim1100/ElasticSearch">GitHub с учебными материалами</a><a href="#main">↑ Наверх</a></footer>
+<script>
+"use strict";
+const byId=id=>document.getElementById(id);
+function theme(light){document.documentElement.classList.toggle("light",light);byId("theme").textContent=light?"Тёмная тема":"Светлая тема";}
+let preferred=null;try{preferred=localStorage.getItem("academy-theme");}catch(e){}
+theme(preferred===null?window.matchMedia("(prefers-color-scheme: light)").matches:preferred==="light");
+byId("theme").addEventListener("click",()=>{const light=!document.documentElement.classList.contains("light");theme(light);try{localStorage.setItem("academy-theme",light?"light":"dark");}catch(e){};});
+const evidence={
+log:{entry:"Сборка v1; GET /api/search?query=Чай; статус HTTP 200.\nНи списка ожидаемых товаров, ни seed, ни сравнения с требованием нет.",answer:"unknown",why:"HTTP 200 означает успешный HTTP-обмен, но не подтверждает правильность найденных товаров. Нужны требования, данные, Expected и Actual."},
+pair:{entry:"Требование: по «Чай» найти P1 и P2.\nSeed: P1=Чай, P2=чай.\nФакт v1: P1.\nExpected=[P1,P2], Actual=[P1].",answer:"bug",why:"Предусловия и ожидаемый результат известны. Факт расходится с требованием — обнаружен дефект конкретной проверки, даже если HTTP-ответ был успешным."},
+proof:{entry:"Сборка v2; seed: P1=Чай, P2=чай.\nЗапрос=«Чай»; Expected=[P1,P2].\nActual=[P1,P2], журнал сохранён с версией и временем.",answer:"ok",why:"Этот конкретный сценарий подтверждён воспроизводимыми данными. Это не доказательство отсутствия всех других ошибок."}
+};
+function showEvidence(){const x=evidence[byId("ev-case").value];byId("ev-record").textContent=x.entry;byId("ev-guess").value="";byId("ev-result").className="feedback";byId("ev-result").textContent="Выбери, какой вывод из этого журнала допустим."; }
+byId("ev-case").addEventListener("change",showEvidence);
+byId("ev-check").addEventListener("click",()=>{const x=evidence[byId("ev-case").value],guess=byId("ev-guess").value,out=byId("ev-result");if(!guess){out.className="feedback warn";out.textContent="Выбери один из трёх вариантов вывода.";return;}const correct=guess===x.answer;out.className="feedback "+(correct?"good":"warn");out.textContent=(correct?"✓ Верно! ":"↗ Пока нет. ")+x.why;});
+showEvidence();
+const skillList=[
+{id:"http",name:"HTTP, JSON и объяснение API"},
+{id:"testing",name:"Тест-дизайн и Expected / Actual"},
+{id:"sql",name:"SQL и модели данных"},
+{id:"docs",name:"Чтение Elastic Docs и версий"},
+{id:"diagnostics",name:"Диагностика передачи данных"},
+{id:"security",name:"Права доступа и безопасная практика"}
+];
+const levels=Object.create(null),skillHost=byId("skill-rows");
+skillList.forEach(s=>{const row=document.createElement("div");row.className="skillrow";const left=document.createElement("div"),name=document.createElement("div"),bar=document.createElement("div"),fill=document.createElement("span");name.className="skillname";name.textContent=s.name;bar.className="skillbar";bar.setAttribute("aria-hidden","true");bar.append(fill);left.append(name,bar);
+const select=document.createElement("select");select.setAttribute("aria-label","Самооценка: "+s.name);
+["0 — не оценено","1 — узнаю термин","2 — могу объяснить","3 — применяю","4 — диагностирую","5 — проектирую / обучаю"].forEach((label,i)=>{const opt=document.createElement("option");opt.value=String(i);opt.textContent=label;select.append(opt);});
+select.addEventListener("change",()=>{levels[s.id]=Number(select.value);fill.style.width=(levels[s.id]/5*100)+"%";byId("skill-output").textContent="Уровень выбран. Нажми «Построить план», чтобы увидеть следующие действия.";});
+row.append(left,select);skillHost.append(row);s.select=select;s.fill=fill;});
+byId("skill-plan").addEventListener("click",()=>{
+const chosen=skillList.filter(s=>Number(s.select.value)>0);const out=byId("skill-output");
+if(!chosen.length){out.className="feedback warn";out.textContent="Сначала выбери хотя бы один уровень выше нуля. Ноль — пока не оценено, а не плохая оценка.";return;}
+const weak=chosen.filter(s=>Number(s.select.value)<3),strong=chosen.filter(s=>Number(s.select.value)>=3);
+const lines=["Самооценка (не официальная оценка наставника):",...chosen.map(s=>"• "+s.name+": "+s.select.value+"/5"),"",strong.length?"Подтверждать на самостоятельной практике: "+strong.map(s=>s.name).join("; ")+".":"Пока нет умений с самооценкой ≥3.","",weak.length?"Изучить и проверить заново: "+weak.map(s=>s.name).join("; ")+".":"Низкие оценки не выбраны; ищи новые задачи на диагностику и проектирование.","","Для следующего уровня всегда нужны проверяемые Evidence и повторная попытка."];
+out.className="feedback good";out.textContent=lines.join("\n");
+});
+byId("skill-clear").addEventListener("click",()=>{skillList.forEach(s=>{s.select.value="0";s.fill.style.width="0%";});byId("skill-output").className="feedback";byId("skill-output").textContent="Карта очищена. Это не влияет на оценки в Tracker.";});
+const stageValues={
+normal:[["120","120","120","120"],"Данные доставлены и видны. Все четыре этапа согласованы для этого учебного примера."],
+queue:[["120","100","100","100"],"Сообщение ещё не доставлено воркеру. Поиск пока читает старую цену из индекса."],
+refresh:[["120","120","120","100"],"Документ уже обновлён в индексе, но поиск показывает старое значение до refresh."],
+alias:[["120","120","120","100"],"Обновлённый документ находится в одном индексе, а поисковый alias направляет запрос в другой."]
+};
+let pipeStep=0;
+function renderPipe(){
+const mode=byId("pipe-mode").value,values=stageValues[mode][0];
+const ids=["pipe-a","pipe-b","pipe-c","pipe-d"];ids.forEach((id,i)=>{const box=byId(id);box.textContent=pipeStep>=i?values[i]:"—";const parent=box.closest(".stage");parent.classList.toggle("active",pipeStep===i);parent.classList.toggle("lag",pipeStep>=i&&i>0&&values[i]!==values[0]);});
+byId("pipe-step").textContent="Шаг "+(pipeStep+1)+" из 4";
+const hints=["1. PostgreSQL — источник текущей цены, в нашем примере 120.","2. Worker/очередь передаёт изменение в поисковую проекцию.","3. Elasticsearch сохраняет проиндексированное состояние документа.","4. Поисковый запрос читает видимую поисковую проекцию."];
+byId("pipe-output").textContent=hints[pipeStep]+(pipeStep===3?"\n\nИтог: "+stageValues[mode][1]:"\n\nНажми «Показать следующий шаг», чтобы проследить данные.");
+}
+byId("pipe-next").addEventListener("click",()=>{pipeStep=Math.min(pipeStep+1,3);renderPipe();});
+byId("pipe-reset").addEventListener("click",()=>{pipeStep=0;renderPipe();});
+byId("pipe-mode").addEventListener("change",()=>{pipeStep=0;renderPipe();});renderPipe();
+const answerFields=[["lab-a","A · Факты/гипотезы"],["lab-b","B · Диагностический план"],["lab-c","C · Карта навыков"],["lab-d","D · Evidence / повторения"],["q1","K1 · Наблюдение vs гипотеза"],["q2","K2 · Границы теста"],["q3","K3 · Mastery 3 vs 4"],["q4","K4 · Синхронизация vs refresh"],["q5","K5 · Review Queue"]];
+function reportProgress(){const count=answerFields.filter(([id])=>byId(id).value.trim()).length;byId("report-count").textContent=count+" / "+answerFields.length;byId("report-bar").style.width=(count/answerFields.length*100)+"%";}
+answerFields.forEach(([id])=>byId(id).addEventListener("input",reportProgress));reportProgress();
+function report(){
+const skillAnswers=skillList.map(s=>"  • "+s.name+": "+s.select.value+"/5").join("\n");
+return ["M00-L04 — СДАЮ ЛАБОРАТОРНУЮ","Тема: Карта знаний и инженерная диагностика","Сценарий: AcademyShop (синтетические данные, без настоящего кластера)","",...answerFields.flatMap(([id,title])=>[title,byId(id).value.trim()||"[нет ответа]",""]),"Самооценка из интерактивной карты (не официальный Mastery):",skillAnswers,"","Прошу проверить по рубрике (теория ≥80, практика ≥90), составить персональную карту и сохранить подтверждённый результат в Google Sheets."].join("\n");
+}
+byId("report-build").addEventListener("click",()=>{byId("report-text").value=report();byId("report-msg").textContent="Отчёт сформирован. Скопируй его в чат; это ещё не сдача, пока сообщение не отправлено.";});
+byId("report-copy").addEventListener("click",async()=>{byId("report-text").value=report();try{await navigator.clipboard.writeText(byId("report-text").value);byId("report-msg").textContent="Отчёт скопирован. Вставь его в чат для Code Review."; }catch(e){byId("report-text").focus();byId("report-text").select();byId("report-msg").textContent="Автокопирование недоступно. Отчёт выделен: нажми Ctrl+C и вставь в чат."; }});
+</script>
+</body></html>
