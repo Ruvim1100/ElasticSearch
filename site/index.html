@@ -114,10 +114,28 @@ input{width:255px;max-width:100%}select{min-width:158px}
 <footer class="container foot"><span>Elasticsearch Engineering Academy · Source-controlled learning</span><span>Код: <a href="https://github.com/Ruvim1100/ElasticSearch">GitHub</a> · Результаты: <a href="https://docs.google.com/spreadsheets/d/1RAOCwPvpiUlYKvzrWvx7bxCZuvduTQ9TslzMvbG4WKM/edit">Google Sheets</a></span></footer>
 <script src="data/catalog.js"></script>
 <script>
-(function(){
+(async function(){
   'use strict';
-  const data=window.ACADEMY_CATALOG;
-  if(!data){ document.getElementById('modules').textContent='Каталог ещё не собран. Запустите npm run build.'; return; }
+  // Read the current generated catalog on each page load. The query parameter
+  // prevents old browser/CDN copies from hiding newly published lessons.
+  // catalog.js remains a fallback for offline/local file viewing.
+  let data=window.ACADEMY_CATALOG;
+  try {
+    const catalogUrl=new URL('data/catalog.json',document.baseURI);
+    catalogUrl.searchParams.set('v',String(Date.now()));
+    const response=await fetch(catalogUrl.toString(),{cache:'no-store'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const fresh=await response.json();
+    if(!Array.isArray(fresh.modules))throw new Error('Invalid catalog shape');
+    data=fresh;
+  } catch(error) {
+    const warning=document.createElement('p');
+    warning.setAttribute('role','status');
+    warning.style.color='var(--muted)';
+    warning.textContent='Не удалось проверить свежесть каталога. Показываем сохранённую версию; попробуйте обновить страницу позже.';
+    document.getElementById('catalog').prepend(warning);
+  }
+  if(!data){document.getElementById('modules').textContent='Каталог пока недоступен. Проверьте соединение и обновите страницу.';return;}
   const $=id=>document.getElementById(id);
   $('stat-modules').textContent=data.modules.length;
   $('stat-planned').textContent=data.planned;
